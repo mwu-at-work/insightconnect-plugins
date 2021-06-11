@@ -7,3 +7,4 @@ from .echo.action import Echo
 from .get_attributes.action import GetAttributes
 from .list_share_files.action import ListShareFiles
 from .list_shares.action import ListShares
+from .modify_file.action import ModifyFile

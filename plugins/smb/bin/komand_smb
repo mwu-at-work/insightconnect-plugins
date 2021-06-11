@@ -50,6 +50,8 @@ def main():
 
             self.add_action(actions.ListShares())
 
+            self.add_action(actions.ModifyFile())
+
 
     """Run plugin"""
     cli = komand.CLI(ICONSmb())

@@ -355,4 +355,32 @@ actions:
         description: File attributes
         type: file
         required: true
-
+  modify_file:
+    title: Modify File
+    description: Modify file
+    input:
+      share_name:
+        title: Share Name
+        description: Name of the SMB share
+        type: string
+        required: true
+        example: data
+      file_path:
+        title: File Path
+        description: Path relative to share to modify file attributes
+        type: string
+        required: true
+        example: test.csv
+      timeout:
+        title: Timeout
+        description: Request timeout of operation in seconds
+        type: integer
+        required: false
+        default: 30
+        example: 30
+    output:
+      success:
+        title: Success
+        description: Reset Success
+        type: boolean
+        required: true

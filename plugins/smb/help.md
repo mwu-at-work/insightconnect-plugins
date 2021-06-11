@@ -55,6 +55,39 @@ Example input:
 
 ### Actions
 
+#### Modify File
+
+This action is used to modify file.
+
+##### Input
+
+|Name|Type|Default|Required|Description|Enum|Example|
+|----|----|-------|--------|-----------|----|-------|
+|file_path|string|None|True|Path relative to share to modify file attributes|None|test.csv|
+|share_name|string|None|True|Name of the SMB share|None|data|
+|timeout|integer|30|False|Request timeout of operation in seconds|None|30|
+
+Example input:
+
+```
+{
+  "file_path": "test.csv",
+  "share_name": "data",
+  "timeout": 30
+}
+```
+
+##### Output
+
+|Name|Type|Required|Description|
+|----|----|--------|-----------|
+|success|boolean|True|Reset Success|
+
+Example output:
+
+```
+```
+
 #### Create File
 
 This action is used to create a file in a given share.

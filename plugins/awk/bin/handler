@@ -1,0 +1,8 @@
+from komand_awk import connection, actions, triggers
+
+
+def lambda_handler(event, context):
+    obj = "actions" + "." + event.get("action_name") + "()"
+    action_obj = eval(obj)
+    result = action_obj.run(event.get('input'))
+    return result

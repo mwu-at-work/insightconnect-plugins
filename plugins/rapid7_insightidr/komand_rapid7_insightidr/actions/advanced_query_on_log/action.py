@@ -4,8 +4,8 @@ from komand.exceptions import PluginException
 
 # Custom imports below
 import time
-import json
 from komand_rapid7_insightidr.util.parse_dates import parse_dates
+from komand_rapid7_insightidr.util.resource_helper import ResourceHelper
 
 
 class AdvancedQueryOnLog(komand.Action):
@@ -42,30 +42,14 @@ class AdvancedQueryOnLog(komand.Action):
         # It will return results if it gets them. If not, we'll get a call back URL to work on
         callback_url, log_entries = self.maybe_get_log_entries(log_id, query, time_from, time_to)
 
-        if not log_entries:
+        if callback_url and not log_entries:
             log_entries = self.get_results_from_callback(callback_url, timeout)
 
-        log_entries = komand.helper.clean(log_entries)
-
-        for log_entry in log_entries:
-            log_entry["message"] = json.loads(log_entry.get("message", "{}"))
-
-            labels = log_entry.get("labels", [])
-            new_labels = []
-            if labels:
-                for label in labels:
-                    log_id = label.get("id")
-                    if log_id:
-                        response = self.connection.session.get(
-                            f"{self.connection.url}log_search/management/labels/{log_id}"
-                        )
-                        try:
-                            response.raise_for_status()
-                            new_labels.append(response.json().get("label", {}).get("name"))
-                        except Exception:
-                            continue
-
-                log_entry["labels"] = new_labels
+        if log_entries:
+            log_entries = ResourceHelper.get_log_entries_with_new_labels(
+                self.connection,
+                komand.helper.clean(log_entries)
+            )
 
         self.logger.info(f"Sending results to orchestrator.")
         return {Output.RESULTS: log_entries, Output.COUNT: len(log_entries)}
@@ -171,7 +155,7 @@ class AdvancedQueryOnLog(komand.Action):
             return None, potential_results
         else:
             self.logger.info("Got a callback url. Polling results...")
-            return results_object.get("links")[0].get("href"), None
+            return results_object.get("links", [{}])[0].get("href"), []
 
     def get_log_id(self, log_name: str) -> str:
         """

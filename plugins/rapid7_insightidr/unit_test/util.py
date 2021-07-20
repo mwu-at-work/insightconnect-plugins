@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 import os
@@ -34,6 +35,39 @@ class Util:
     def read_file_to_string(filename):
         with open(filename) as my_file:
             return my_file.read()
+
+    @staticmethod
+    async def mocked_async_requests(*args, **kwargs):
+        class MockResponse:
+            def __init__(self, filename, status_code):
+                self.filename = filename
+                self.status = status_code
+                self.text = "This is some error text"
+
+            def raise_for_status(self):
+                if self.status == 404:
+                    raise HTTPError("Not found", response=self)
+
+            async def json(self):
+                if self.filename == "error":
+                    raise PluginException(preset=PluginException.Preset.SERVER_ERROR)
+                if self.filename == "empty":
+                    return {}
+
+                return json.loads(
+                    Util.read_file_to_string(
+                        os.path.join(os.path.dirname(os.path.realpath(__file__)), f"payloads/{self.filename}.json.resp")
+                    )
+                )
+
+        if args[0] == "https://rapid7.com/log_search/management/labels/00000000-0000-0000-0000-000000000006":
+            return MockResponse("label_006", 200)
+        elif args[0] == "https://rapid7.com/log_search/management/labels/00000000-0000-0000-0000-000000000007":
+            return MockResponse("label_007", 200)
+        elif args[0] == "https://rapid7.com/log_search/management/labels/not exist label - 404":
+            return MockResponse("label_404", 404)
+
+        raise Exception("Not implemented")
 
     @staticmethod
     def mocked_requests(*args, **kwargs):
@@ -81,12 +115,6 @@ class Util:
             or args[0] == "https://rapid7.com/log_search/query/logsets/log_id4"
         ):
             return MockResponse("log_id4", 200)
-        elif args[0] == "https://rapid7.com/log_search/management/labels/00000000-0000-0000-0000-000000000006":
-            return MockResponse("label_006", 200)
-        elif args[0] == "https://rapid7.com/log_search/management/labels/00000000-0000-0000-0000-000000000007":
-            return MockResponse("label_007", 200)
-        elif args[0] == "https://rapid7.com/log_search/management/labels/not exist label - 404":
-            return MockResponse("label_404", 404)
         elif args[0] == "https://rapid7.com/log_search/management/logsets":
             return MockResponse("logsets", 200)
 

@@ -103,11 +103,8 @@ class ResourceHelper(object):
         async with _get_async_session(connection.session.headers) as async_session:
             tasks: [asyncio.Future] = []
             for log_id in log_ids:
-                tasks.append(asyncio.ensure_future(get_label_for_id(
-                        log_id=log_id,
-                        url=connection.url,
-                        session=async_session
-                    ))
+                tasks.append(
+                    asyncio.ensure_future(get_label_for_id(log_id=log_id, url=connection.url, session=async_session))
                 )
 
             labels = await asyncio.gather(*tasks)
@@ -133,7 +130,4 @@ class ResourceHelper(object):
 
     @staticmethod
     def get_log_entries_with_new_labels(connection: Connection, log_entries: [dict]) -> [dict]:
-        return asyncio.run(ResourceHelper._get_log_entries_with_labels(
-            connection=connection,
-            log_entries=log_entries
-        ))
+        return asyncio.run(ResourceHelper._get_log_entries_with_labels(connection=connection, log_entries=log_entries))

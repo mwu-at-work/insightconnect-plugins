@@ -47,8 +47,7 @@ class AdvancedQueryOnLog(komand.Action):
 
         if log_entries:
             log_entries = ResourceHelper.get_log_entries_with_new_labels(
-                self.connection,
-                komand.helper.clean(log_entries)
+                self.connection, komand.helper.clean(log_entries)
             )
 
         self.logger.info(f"Sending results to orchestrator.")

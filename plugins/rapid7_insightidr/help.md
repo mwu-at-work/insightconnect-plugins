@@ -44,7 +44,7 @@ This action is used to create a private InsightIDR threat and add indicators to 
 
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
-|indicators|[]string|None|True|Add indicators to new threat in InsightIDR. Accept IP addresses, process hashes (SHA1, MD5, SHA256), domain names, URLs|None|["https://example.com", "https://example.com"]|
+|indicators|[]string|None|True|Add indicators to new threat in InsightIDR. Accept IP addresses, process hashes (SHA1, MD5, SHA256), domain names, URLs|None|["example.com", "10.0.0.1"]|
 |note_text|string|Threat created via InsightConnect|False|Note text of created threat|None|Threat created via InsightConnect|
 |threat_name|string|None|True|Name of created threat|None|Threat created via InsightConnect|
 

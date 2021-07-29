@@ -484,8 +484,8 @@ Example input:
 ```
 {
   "alert_type": "Account Created",
-  "datetime_from": "2018-07-01T00:00:00Z",
-  "datetime_to": "2018-07-01T00:00:00Z",
+  "datetime_from": "2018-07-01 00:00:00 00:00",
+  "datetime_to": "2018-07-01 00:00:00 00:00",
   "max_investigations_to_close": 10,
   "source": "MANUAL"
 }
@@ -801,7 +801,8 @@ _This plugin does not contain any troubleshooting information._
 
 # Version History
 
-* 3.1.3 - Change object `labels` to `[]string` in Advanced Query on Log and Advanced Query on Log Set actions
+* 4.0.0 - Change object `labels` to `[]string` in Advanced Query on Log and Advanced Query on Log Set actions
+* 3.1.3 - Fix issue where Get a Log and Get All Logs would either fail in workflow or in connection test
 * 3.1.2 - Send plugin name and version in the User-Agent string to vendor
 * 3.1.1 - Convert given date from timezone to UTC in List Investigations action
 * 3.1.0 - Add new action Create Threat

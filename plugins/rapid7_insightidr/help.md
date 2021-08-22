@@ -12,6 +12,10 @@ Do more with Investigations in [InsightIDR](https://www.rapid7.com/products/insi
 
 * Requires an API Key from the Insight platform
 
+# Supported Product Versions
+
+_There are no supported product versions listed._
+
 # Documentation
 
 ## Setup
@@ -474,8 +478,8 @@ This action is used to close all investigations that fall within a date range.
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
 |alert_type|string|None|False|The category of alerts that should be closed|None|Account Created|
-|datetime_from|date|None|False|An ISO formatted timestamp, default last week|None|2018-07-01 00:00:00+00:00|
-|datetime_to|date|None|False|An ISO formatted timestamp of the ending date range, current time if left blank|None|2018-07-01 00:00:00+00:00|
+|datetime_from|date|None|False|An ISO formatted timestamp, default last week|None|2018-07-01 00:00:00 00:00|
+|datetime_to|date|None|False|An ISO formatted timestamp of the ending date range, current time if left blank|None|2018-07-01 00:00:00 00:00|
 |max_investigations_to_close|integer|None|False|An optional maximum number of alerts to close with this request. If this parameter is not specified then there is no maximum. If this limit is exceeded, then an error is returned|None|10|
 |source|string|MANUAL|False|The name of an investigation source|['ALERT', 'MANUAL', 'HUNT']|MANUAL|
 

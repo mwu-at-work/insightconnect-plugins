@@ -29,9 +29,9 @@ class Connection(komand.Connection):
         response = self.session.get(f"{self.url}validate")
         if response.status_code == 401:
             raise ConnectionTestException(preset=ConnectionTestException.Preset.UNAUTHORIZED)
-        elif response.status_code in range(500, 599):
+        if response.status_code in range(500, 599):
             raise ConnectionTestException(preset=ConnectionTestException.Preset.SERVICE_UNAVAILABLE)
-        elif response.status_code == 200:
+        if response.status_code == 200:
             return response.json()
         else:
             self.logger.error(response.text)

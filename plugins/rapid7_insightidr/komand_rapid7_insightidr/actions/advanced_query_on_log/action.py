@@ -50,7 +50,7 @@ class AdvancedQueryOnLog(komand.Action):
                 self.connection, komand.helper.clean(log_entries)
             )
 
-        self.logger.info(f"Sending results to orchestrator.")
+        self.logger.info("Sending results to orchestrator.")
         return {Output.RESULTS: log_entries, Output.COUNT: len(log_entries)}
 
     def get_results_from_callback(self, callback_url: str, timeout: int) -> [object]:
@@ -178,19 +178,19 @@ class AdvancedQueryOnLog(komand.Action):
 
         logs = response.json().get("logs")
 
-        id = ""
+        log_id = ""
 
         for log in logs:
             name = log.get("name")
             self.logger.info(f"Checking {log_name} against {name}")
             if name == log_name:
                 self.logger.info("Log found.")
-                id = log.get("id")
+                log_id = log.get("id")
                 break
 
-        if id:
-            self.logger.info(f"Found log with name {log_name} and ID: {id}")
-            return id
+        if log_id:
+            self.logger.info(f"Found log with name {log_name} and ID: {log_id}")
+            return log_id
 
         self.logger.error(f"Could not find log with name {log_name}")
         raise PluginException(

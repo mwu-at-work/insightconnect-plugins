@@ -51,7 +51,7 @@ class AdvancedQueryOnLogSet(komand.Action):
                 self.connection, komand.helper.clean(log_entries)
             )
 
-        self.logger.info(f"Sending results to orchestrator.")
+        self.logger.info("Sending results to orchestrator.")
         return {Output.RESULTS: log_entries, Output.COUNT: len(log_entries)}
 
     def get_results_from_callback(self, callback_url: str, timeout: int) -> [object]:
@@ -179,19 +179,19 @@ class AdvancedQueryOnLogSet(komand.Action):
 
         log_sets = response.json().get("logsets")
 
-        id = ""
+        log_id = ""
 
         for log_set in log_sets:
             name = log_set.get("name")
             self.logger.info(f"Checking {log_name} against {name}")
             if name == log_name:
                 self.logger.info("Log set found.")
-                id = log_set.get("id")
+                log_id = log_set.get("id")
                 break
 
-        if id:
-            self.logger.info(f"Found log set with name {log_name} and ID: {id}")
-            return id
+        if log_id:
+            self.logger.info(f"Found log set with name {log_name} and ID: {log_id}")
+            return log_id
 
         self.logger.error(f"Could not find log set with name {log_name}")
         raise PluginException(

@@ -95,14 +95,14 @@ class ResourceHelper(object):
 
     @staticmethod
     async def _get_log_entries_with_labels(connection: Connection, log_entries: [dict]) -> [dict]:
-        log_ids = set()
+        label_ids = set()
         for log_entry in log_entries:
             for label in log_entry.get("labels", []):
-                log_ids.add(label.get("id"))
+                label_ids.add(label.get("id"))
 
         async with _get_async_session(connection.session.headers) as async_session:
             tasks: [asyncio.Future] = []
-            for log_id in log_ids:
+            for log_id in label_ids:
                 tasks.append(
                     asyncio.ensure_future(get_label_for_id(log_id=log_id, url=connection.url, session=async_session))
                 )

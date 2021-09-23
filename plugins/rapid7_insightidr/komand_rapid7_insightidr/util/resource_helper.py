@@ -18,12 +18,12 @@ def _get_async_session(headers) -> aiohttp.ClientSession:
     return aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False), headers=headers)
 
 
-async def get_label_for_id(log_id: str, url: str, session: aiohttp.ClientSession) -> dict:
-    response = await session.get(f"{url}log_search/management/labels/{log_id}")
+async def get_label_for_id(label_id: str, url: str, session: aiohttp.ClientSession) -> dict:
+    response = await session.get(f"{url}log_search/management/labels/{label_id}")
     if response.status == 200:
         try:
             resp_json = await response.json()
-            return {"id": log_id, "name": resp_json.get("label", {}).get("name")}
+            return {"id": label_id, "name": resp_json.get("label", {}).get("name")}
         except json.JSONDecodeError:
             return {}
 
@@ -102,9 +102,9 @@ class ResourceHelper(object):
 
         async with _get_async_session(connection.session.headers) as async_session:
             tasks: [asyncio.Future] = []
-            for log_id in label_ids:
+            for label_id in label_ids:
                 tasks.append(
-                    asyncio.ensure_future(get_label_for_id(log_id=log_id, url=connection.url, session=async_session))
+                    asyncio.ensure_future(get_label_for_id(label_id=label_id, url=connection.url, session=async_session))
                 )
 
             labels = await asyncio.gather(*tasks)

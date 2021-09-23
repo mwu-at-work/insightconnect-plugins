@@ -104,7 +104,9 @@ class ResourceHelper(object):
             tasks: [asyncio.Future] = []
             for label_id in label_ids:
                 tasks.append(
-                    asyncio.ensure_future(get_label_for_id(label_id=label_id, url=connection.url, session=async_session))
+                    asyncio.ensure_future(
+                        get_label_for_id(label_id=label_id, url=connection.url, session=async_session)
+                    )
                 )
 
             labels = await asyncio.gather(*tasks)

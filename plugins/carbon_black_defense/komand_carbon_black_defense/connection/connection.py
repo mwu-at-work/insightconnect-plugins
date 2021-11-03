@@ -15,12 +15,14 @@ class Connection(komand.Connection):
     def __init__(self):
         super(self.__class__, self).__init__(input=ConnectionSchema())
 
+
     def connect(self, params):
         self.logger.info("Connect: Connecting..")
         self.host = params.get(Input.URL)
         self.token = params.get(Input.API_KEY).get("secretKey")
         self.org_key = params.get(Input.ORG_KEY)
         self.connector = params.get(Input.CONNECTOR)
+        self.headers = {"X-Auth-Token": f"{self.token}/{self.connector}"}
 
     def get_job_id_for_detail_search(self, event_id: str) -> Optional[str]:
         response = self.make_request("POST", f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs",
@@ -68,7 +70,7 @@ class Connection(komand.Connection):
             self.raise_for_status_code(response)
 
             if 200 <= response.status_code < 300:
-                return response
+                return response.json()
 
             raise PluginException(
                 cause="Something unexpected occurred.",

@@ -4,8 +4,7 @@
 
 This plugin utilizes the [VMware Carbon Black Cloud Endpoint Standard API](https://developer.carbonblack.com/reference/carbon-black-cloud/cb-defense/latest/rest-api/).
 
-# 
-Key Features
+# Key Features
 
 * Find events
 * Get details for specific events

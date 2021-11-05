@@ -1,4 +1,6 @@
 import insightconnect_plugin_runtime
+from insightconnect_plugin_runtime.exceptions import PluginException
+
 from .schema import GetDetailsForSpecificEventInput, GetDetailsForSpecificEventOutput, Input, Output
 
 
@@ -49,9 +51,11 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
             )
 
         if response.status_code in range(400, 499):
-            raise Exception(
-                f"Carbon Black returned a {response.status_code} code."
-                f" Verify the token and host configuration in the connection. Response was: {response.text}"
+
+            raise PluginException(
+                cause="Received an unexpected response from the server.",
+                assistance="(non-JSON or no response was received).",
+                data=response.text
             )
         if response.status_code in range(500, 599):
             raise Exception(

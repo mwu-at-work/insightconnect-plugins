@@ -1,13 +1,8 @@
-import komand
+import insightconnect_plugin_runtime
 from .schema import GetDetailsForSpecificEventInput, GetDetailsForSpecificEventOutput, Input, Output
-from komand_carbon_black_defense.connection import *
-
-# Custom imports below
-import requests
-import json
 
 
-class GetDetailsForSpecificEvent(komand.Action):
+class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
 
     def __init__(self):
         super(self.__class__, self).__init__(
@@ -36,33 +31,33 @@ class GetDetailsForSpecificEvent(komand.Action):
             self.connection.retrieve_results_for_detail_search()
 
         try:
-            success = self.connection.retrieve_results_for_detail_search()
-            data = komand.helper.clean(success.json())
+            response = self.connection.retrieve_results_for_detail_search()
+            data = insightconnect_plugin_runtime.helper.clean(response.json())
 
-            if success.status_code == 200:
+            if response.status_code == 200:
                 return {
-                Output.EVENTINFO: data["eventInfo"],
+                    Output.EVENTINFO: data["eventInfo"],
                 }
 
         except ValueError:
-            self.logger.error(success.text)
+            self.logger.error(response.text)
             raise Exception(
                 f"Error: Received an unexpected response"
                 f" (non-JSON or no response was received). Raw response in logs."
             )
 
-        if success.status_code in range(400, 499):
+        if response.status_code in range(400, 499):
             raise Exception(
-                f"Carbon Black returned a {success.status_code} code."
-                f" Verify the token and host configuration in the connection. Response was: {result.text}"
+                f"Carbon Black returned a {response.status_code} code."
+                f" Verify the token and host configuration in the connection. Response was: {response.text}"
             )
-        if success.status_code in range(500, 599):
+        if response.status_code in range(500, 599):
             raise Exception(
-                f"Carbon Black returned a {success.status_code} code."
-                f" If the problem persists please contact support for help. Response was: {result.text}"
+                f"Carbon Black returned a {response.status_code} code."
+                f" If the problem persists please contact support for help. Response was: {response.text}"
             )
-        self.logger.error(success.text)
+        self.logger.error(response.text)
         raise Exception(
             f"An unknown error occurred."
-            f" Carbon Black returned a {success.status_code} code. Contact support for help. Raw response in logs."
+            f" Carbon Black returned a {response.status_code} code. Contact support for help. Raw response in logs."
         )

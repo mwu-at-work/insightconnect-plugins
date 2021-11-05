@@ -450,44 +450,6 @@ types:
       required: false
 
 
-output:
-  contacted:
-    title: "Contacted"
-    type: integer
-    description: "Contacted"
-    required: false
-  num_aggregated:
-    title: "Num Aggregated"
-    type: integer
-    description: "Num aggregated"
-    required: false
-  results:
-    title: "Results"
-    type: event_info
-    description: "Results"
-    required: false
-  num_available:
-    title: "Num Available"
-    type: integer
-    description: "Num available"
-    required: false
-  num_found:
-    title: "Num Found"
-    type: integer
-    description: "Num found"
-    required: false
-  approximate_unaggregated:
-    title: "Approximate Unaggregated"
-    type: integer
-    description: "Approximate unaggregated"
-    required: false
-  completed:
-    title: "Completed"
-    type: integer
-    description: "Completed"
-    required: false
-
-
 
 connection:
   url:

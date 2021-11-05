@@ -340,7 +340,7 @@ Get Notifications trigger requires that the [API key type](https://developer.car
 The Role Based Access Control (RBAC) of your API Key will require the right permissions as noted in the following link: [https://developer.carbonblack.com/reference/carbon-black-cloud/cb-defense/latest/platform-search-api-enriched-events/#authentication](https://developer.carbonblack.com/reference/carbon-black-cloud/cb-defense/latest/platform-search-api-enriched-events/#authentication).
 
 # Version History
-
+* 3.0.0 - Update Get Event Details Action
 * 2.0.1 - Rebrand and update help references
 * 2.0.0 - New spec and help.md format for the Extension Library | Fix spelling of variable titled Registry Value
 * 1.1.1 - Update to Python 3.7 Slim SDK (plugin size reduction) | Fix bug in output where Security Event Code was defined as an `object` instead of a `string`

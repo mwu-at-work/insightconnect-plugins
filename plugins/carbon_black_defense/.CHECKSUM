@@ -1,23 +1,23 @@
 {
 	"spec": "59cb63b0ab9c85a32796f8ecbfd85714",
-	"manifest": "cf12c53d855d9630d85ab17ea64b5b18",
-	"setup": "759e6a92661d48a5329a2a78b3ca9aac",
+	"manifest": "1c7df23d4c4bde8fe05f154ffd898647",
+	"setup": "841ea8255f9edc134f6bd8f55eb29af1",
 	"schemas": [
 		{
 			"identifier": "find_event/schema.py",
-			"hash": "c961aa0c6120db6f88d6337dfc4a4a07"
+			"hash": "6e1b832f7be37a4f9674369b1c809a2a"
 		},
 		{
 			"identifier": "get_details_for_specific_event/schema.py",
-			"hash": "22b91c47a1bfa1344e0155a5cabf14df"
+			"hash": "9e084a7603680980958514d712e2f4c7"
 		},
 		{
 			"identifier": "connection/schema.py",
-			"hash": "93f160f6cac8dc9006ef678b656940a6"
+			"hash": "c651705af40a7ae3f08f0d03b82bc3c2"
 		},
 		{
 			"identifier": "get_notifications/schema.py",
-			"hash": "b2de5935224324ffebb64722eea80295"
+			"hash": "353dbcba4924a3343c8c9289283fddfe"
 		},
 		{
 			"identifier": "insightconnect_plugin_runtime/schema.py",

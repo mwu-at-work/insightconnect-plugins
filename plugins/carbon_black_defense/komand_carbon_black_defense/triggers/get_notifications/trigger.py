@@ -1,4 +1,4 @@
-import komand
+import insightconnect_plugin_runtime
 import time
 from .schema import GetNotificationsInput, GetNotificationsOutput, Input
 
@@ -6,7 +6,7 @@ from .schema import GetNotificationsInput, GetNotificationsOutput, Input
 import requests
 
 
-class GetNotifications(komand.Trigger):
+class GetNotifications(insightconnect_plugin_runtime.Trigger):
 
     # Notification URI
     _URI = "/integrationServices/v3/notification"
@@ -29,7 +29,7 @@ class GetNotifications(komand.Trigger):
         while True:
             result = requests.get(url, headers=headers)
             try:
-                data = komand.helper.clean(result.json())
+                data = insightconnect_plugin_runtime.helper.clean(result.json())
             except ValueError:
                 self.logger.error(result.text)
                 raise Exception(

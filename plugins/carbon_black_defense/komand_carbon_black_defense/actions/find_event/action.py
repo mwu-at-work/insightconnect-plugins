@@ -1,11 +1,11 @@
-import komand
+import insightconnect_plugin_runtime
 from .schema import FindEventInput, FindEventOutput, Output
 
 # Custom imports below
 import requests
 
 
-class FindEvent(komand.Action):
+class FindEvent(insightconnect_plugin_runtime.Action):
 
     # URI for Find Event
     _URI = "/integrationServices/v3/event/"
@@ -35,7 +35,7 @@ class FindEvent(komand.Action):
         else:
             result = requests.get(url, headers=headers)
         try:
-            data = komand.helper.clean(result.json())
+            data = insightconnect_plugin_runtime.helper.clean(result.json())
         except ValueError:
             self.logger.error(result.text)
             raise Exception(

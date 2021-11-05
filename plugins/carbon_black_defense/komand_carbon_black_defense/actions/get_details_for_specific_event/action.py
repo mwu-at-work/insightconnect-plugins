@@ -58,12 +58,16 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
                 data=response.text
             )
         if response.status_code in range(500, 599):
-            raise Exception(
-                f"Carbon Black returned a {response.status_code} code."
-                f" If the problem persists please contact support for help. Response was: {response.text}"
+
+            raise PluginException(
+                cause="Received an unexpected response from the server.",
+                assistance="(non-JSON or no response was received).",
+                data=response.text
             )
         self.logger.error(response.text)
-        raise Exception(
-            f"An unknown error occurred."
-            f" Carbon Black returned a {response.status_code} code. Contact support for help. Raw response in logs."
+        raise PluginException(
+            cause="Received an unexpected response from the server.",
+            assistance="(non-JSON or no response was received).",
+            data=response.text
         )
+

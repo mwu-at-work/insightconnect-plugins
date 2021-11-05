@@ -73,8 +73,7 @@ class Connection(komand.Connection):
                 return response.json()
 
             raise PluginException(
-                cause="Something unexpected occurred.",
-                assistance="Check the logs and if the issue persists please contact support.",
+                preset=PluginException.Preset.UNKNOWN,
                 data=response.text
             )
         except requests.exceptions.HTTPError as e:

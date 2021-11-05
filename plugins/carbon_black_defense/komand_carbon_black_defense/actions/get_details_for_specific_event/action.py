@@ -34,7 +34,8 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
             response = self.connection.retrieve_results_for_detail_search()
             data = insightconnect_plugin_runtime.helper.clean(response.json())
 
-            if response.status_code == 200:
+            if response.status_code == 200 and "eventInfo" in data:
+
                 return {
                     Output.EVENTINFO: data["eventInfo"],
                 }

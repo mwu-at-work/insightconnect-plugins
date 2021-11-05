@@ -39,7 +39,7 @@ class GetDetailsForSpecificEvent(komand.Action):
             success = self.connection.retrieve_results_for_detail_search()
             data = komand.helper.clean(success.json())
 
-            if success.status_code == 200:
+            if response.status_code == 200 and "eventInfo" in data:
                 return {
                 Output.EVENTINFO: data["eventInfo"],
                 }

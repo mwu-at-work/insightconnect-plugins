@@ -78,9 +78,8 @@ class Connection(komand.Connection):
             )
         except requests.exceptions.HTTPError as e:
             raise PluginException(
-                cause="Something unexpected occurred.",
-                assistance="Check the logs and if the issue persists please contact support.",
-                data=e
+                preset=PluginException.Preset.UNKNOWN,
+                data=response.text
             )
 
     def test(self):

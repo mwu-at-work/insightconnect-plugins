@@ -31,6 +31,7 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
             self.connection.retrieve_results_for_detail_search()
 
         try:
+
             response = self.connection.retrieve_results_for_detail_search()
             data = insightconnect_plugin_runtime.helper.clean(response.json())
 

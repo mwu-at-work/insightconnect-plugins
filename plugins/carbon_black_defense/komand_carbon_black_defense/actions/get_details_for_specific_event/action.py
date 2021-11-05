@@ -1,5 +1,6 @@
 import insightconnect_plugin_runtime
 from insightconnect_plugin_runtime.exceptions import PluginException
+import time
 
 from .schema import GetDetailsForSpecificEventInput, GetDetailsForSpecificEventOutput, Input, Output
 
@@ -14,11 +15,13 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
             output=GetDetailsForSpecificEventOutput(),
         )
 
-    def run(self, params={}):
+    def run(self, params=None):
 
+        if params is None:
+            params = {}
         event_id = params.get(Input.EVENT_ID)
         id_ = self.connection.get_job_id_for_detail_search(event_id=event_id)
-
+        self.logger.info(f"The id is: {id_}")
         if id_ is None:
             return {Output.EVENTINFO: {}}
         detail_search_status = self.connection.check_status_of_detail_search(id_)
@@ -26,25 +29,25 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
         # check if status of
         # detail search is complete by checking if the completed property
         # in results is not equal to the contacted property
-
-        if not detail_search_status:
-            self.connection.check_status_of_detail_search(id_)
-        else:
-            self.connection.retrieve_results_for_detail_search()
+        for _ in range(0, 9999):
+            if not detail_search_status:
+                detail_search_status = self.connection.check_status_of_detail_search(id_)
+                time.sleep(2)
+            else:
+                break
 
         try:
 
-            response = self.connection.retrieve_results_for_detail_search()
-            data = insightconnect_plugin_runtime.helper.clean(response.json())
+            response = self.connection.retrieve_results_for_detail_search(job_id=id_)
+            data = insightconnect_plugin_runtime.helper.clean(response)
+            self.logger.info(f"The data is: {data}")
 
-            if response.status_code == 200 and "eventInfo" in data:
-
-                return {
-                    Output.EVENTINFO: data["eventInfo"],
-                }
+            return {
+                Output.EVENTINFO: data,
+            }
 
         except ValueError:
-            self.logger.error(response.text)
+            self.logger.error(response)
             raise Exception(
                 f"Error: Received an unexpected response"
                 f" (non-JSON or no response was received). Raw response in logs."

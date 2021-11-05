@@ -15,8 +15,11 @@ class Connection(insightconnect_plugin_runtime.Connection):
     def __init__(self):
         super(self.__class__, self).__init__(input=ConnectionSchema())
 
+        self.job_id = None
 
-    def connect(self, params):
+    def connect(self, params=None):
+        if params is None:
+            params = {}
         self.logger.info("Connect: Connecting..")
         self.host = params.get(Input.URL)
         self.token = params.get(Input.API_KEY).get("secretKey")
@@ -25,68 +28,64 @@ class Connection(insightconnect_plugin_runtime.Connection):
         self.headers = {"X-Auth-Token": f"{self.token}/{self.connector}"}
 
     def get_job_id_for_detail_search(self, event_id: str) -> Optional[str]:
-        response = self.make_request("POST", f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs",
-                                     params={"event_ids": [event_id]}).get("response")
-        if response and len(response) > 0:
-            self.logger.info(response.json)
-            return response
+        response = self.call_api("POST",
+                                 f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs",
+                                 json_data={"event_ids":
+                                            [event_id]}).get("job_id")
+        self.logger.info(f"The response is: {response}")
+        if response:
+            job_id = response
+            return job_id
         return None
 
-    def check_status_of_detail_search(self, get_job_id_for_detail_search: str = None):
-        response = self.make_request("GET", f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/{self.job_id}",
-                                     params={"job_id": get_job_id_for_detail_search})
-        self.logger.info(response.json)
-        for data in response.json()['items']:
-            if data['contacted'] == data['completed']:
-                return True
-            return False
+    def check_status_of_detail_search(self, job_id: str = None):
+        response = self.call_api("GET",
+                                 f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/"
+                                 f"{job_id}",
+                                 json_data={"job_id": job_id})
+        self.logger.info(f"{response}")
+        contacted = response.get('contacted')
+        completed = response.get('completed')
+        if contacted and completed and (contacted == completed):
+            return True
+        return False
 
-    def retrieve_results_for_detail_search(self):
-        results = self.make_request("GET",
-                                     f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/{self.job_id}/results",
-                                     params={"job_id": self.get_job_id_for_detail_search})
-        self.logger.info(results.json)
+    def retrieve_results_for_detail_search(self, job_id: str):
+        results = self.call_api("GET",
+                                f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/"
+                                f"{job_id}/results",
+                                json_data={"job_id": job_id})
+        self.logger.info(f"Retrieve results are: {results}")
         return results
 
-    def make_request(self, method: str, url: str, params: dict = None, data: str = None, json_data: object = None):
+    def call_api(self, method: str, url: str, params: dict = None, data: str = None, json_data: object = None):
         try:
-            response = self.call_api(method, url, params, data, json_data)
+            response = requests.request(method, url, headers=self.headers, params=params, data=data,
+                                        json=json_data)
 
-            if response.status_code == 201 or response.status_code == 204:
-                return {}
+            self.logger.info(f"The response is:{response.text}")
             if 200 <= response.status_code < 300:
                 return response.json()
+            if 400 <= response.status_code < 500:
+                raise PluginException(
+                    preset=PluginException.Preset.UNKNOWN,
+                    data=response.text,
+                )
+            if response.status_code >= 500:
+                raise PluginException(preset=PluginException.Preset.SERVER_ERROR, data=response.text)
+
         except json.decoder.JSONDecodeError as e:
             raise PluginException(
                 cause="Received an unexpected response from the server.",
                 assistance="(non-JSON or no response was received).",
                 data=e
             )
-
-    def call_api(self, method: str, url, params: dict = None, data: str = None, json_data: object = None):
-        try:
-            response = requests.request(method, url, headers=self.get_headers(), params=params, data=data,
-                                        json=json_data)
-            self.raise_for_status_code(response)
-
-            if 200 <= response.status_code < 300:
-                return response.json()
-
-            raise PluginException(
-                preset=PluginException.Preset.UNKNOWN,
-                data=response.text
-            )
-        except requests.exceptions.HTTPError as e:
-            raise PluginException(
-                preset=PluginException.Preset.UNKNOWN,
-                data=response.text
-            )
-
+"""""
     def test(self):
         host = self.host
         token = self.token
         connector = self.connector
-        devices = "/appservices/v6/orgs/" + {self.org_key} + "/devices/_search"
+        devices = f"/appservices/v6/orgs/{self.org_key}/devices/_search"
         headers = {"X-Auth-Token": f"{token}/{connector}"}
         url = host + devices
 
@@ -99,3 +98,4 @@ class Connection(insightconnect_plugin_runtime.Connection):
             f"An unknown error occurred. Response code was: {result.status_code}"
             f" If the problem persists please contact support for help. Response was: {result.text}"
         )
+"""""

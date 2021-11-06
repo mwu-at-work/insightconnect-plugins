@@ -22,7 +22,7 @@ class FindEvent(insightconnect_plugin_runtime.Action):
         host = self.connection.host
         token = self.connection.token
         connector = self.connection.connector
-        payload = dict()
+        payload = {}
         for param in params:
             if params[param]:
                 payload[param] = params[param]
@@ -39,8 +39,8 @@ class FindEvent(insightconnect_plugin_runtime.Action):
         except ValueError:
             self.logger.error(result.text)
             raise Exception(
-                f"Error: Received an unexpected response"
-                f" (non-JSON or no response was received). Raw response in logs."
+                "Error: Received an unexpected response"
+                " (non-JSON or no response was received). Raw response in logs."
             )
         if result.status_code == 200:
             return {

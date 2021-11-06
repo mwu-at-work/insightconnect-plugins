@@ -21,14 +21,20 @@ The connection configuration accepts the following parameters:
 
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
-|api_key|credential_secret_key|None|True|API key|None|None|
-|connector|string|None|True|Connector ID|None|None|
-|org_key|string|None|True|Organization key|None|None|
-|url|string|https://example.com|True|API URL|None|None|
+|api_key|credential_secret_key|None|True|API key|None|9de5069c5afe602b2ea0a04b66beb2c0|
+|connector|string|None|True|Connector ID|None|1ABCD23333|
+|org_key|string|None|True|Organization key|None|1ABCDEFGH|
+|url|string|https://example.com|True|API URL|None|https://example.com|
 
 Example input:
 
 ```
+{
+  "api_key": "9de5069c5afe602b2ea0a04b66beb2c0",
+  "connector": "1ABCD23333",
+  "org_key": "1ABCDEFGH",
+  "url": "https://example.com"
+}
 ```
 
 ## Technical Details
@@ -202,11 +208,14 @@ This action is used to retrieve details for an individual event given the event 
 
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
-|event_id|string|None|True|Event ID|None|None|
+|event_id|string|None|True|Event ID|None|9de5069c5afe602b2ea0a04b66beb2c0|
 
 Example input:
 
 ```
+{
+  "event_id": "422af3fc3a7411ea8da649e797467dc0"
+}
 ```
 
 ##### Output

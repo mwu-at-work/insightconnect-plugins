@@ -42,4 +42,3 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
             return {
                 Output.EVENTINFO: data,
             }
-

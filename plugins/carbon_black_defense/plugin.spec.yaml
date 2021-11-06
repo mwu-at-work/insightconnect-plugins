@@ -20,7 +20,7 @@ tags:
 - vmware
 hub_tags:
   use_cases: [threat_detection_and_response]
-  keywords: [carbon black, vmware, defense, antivirus, cloud]
+  keywords: [defense, antivirus]
   features: []
 types:
   deviceInfo:
@@ -458,21 +458,25 @@ connection:
     description: API URL
     default: https://defense.conferdeploy.net
     required: true
+    example: https://example.com
   api_key:
     title: API Key
     type: credential_secret_key
     description: API key
     required: true
+    example: 9de5069c5afe602b2ea0a04b66beb2c0
   org_key:
     title: Organization Key
     type: string
     description: Organization key
     required: true
+    example: 1ABCDEFGH
   connector:
     title: Connector
     type: string
     description: Connector ID
     required: true
+    example: 1ABCD23333
 actions:
   find_event:
     title: Find Event
@@ -583,6 +587,7 @@ actions:
         description: Event ID
         type: string
         required: true
+        example: 422af3fc3a7411ea8da649e797467dc0
     output:
       eventinfo:
         title: Event Info

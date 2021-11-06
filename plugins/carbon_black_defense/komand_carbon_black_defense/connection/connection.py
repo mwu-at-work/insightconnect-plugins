@@ -11,7 +11,6 @@ import json
 
 
 class Connection(insightconnect_plugin_runtime.Connection):
-
     def __init__(self):
         super(self.__class__, self).__init__(input=ConnectionSchema())
 
@@ -28,10 +27,11 @@ class Connection(insightconnect_plugin_runtime.Connection):
         self.headers = {"X-Auth-Token": f"{self.token}/{self.connector}"}
 
     def get_job_id_for_detail_search(self, event_id: str) -> Optional[str]:
-        response = self.call_api("POST",
-                                 f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs",
-                                 json_data={"event_ids":
-                                            [event_id]}).get("job_id")
+        response = self.call_api(
+            "POST",
+            f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs",
+            json_data={"event_ids": [event_id]},
+        ).get("job_id")
         self.logger.info(f"The response is: {response}")
         if response:
             job_id = response
@@ -39,29 +39,30 @@ class Connection(insightconnect_plugin_runtime.Connection):
         return None
 
     def check_status_of_detail_search(self, job_id: str = None):
-        response = self.call_api("GET",
-                                 f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/"
-                                 f"{job_id}",
-                                 json_data={"job_id": job_id})
+        response = self.call_api(
+            "GET",
+            f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/" f"{job_id}",
+            json_data={"job_id": job_id},
+        )
         self.logger.info(f"{response}")
-        contacted = response.get('contacted')
-        completed = response.get('completed')
+        contacted = response.get("contacted")
+        completed = response.get("completed")
         if contacted and completed and (contacted == completed):
             return True
         return False
 
     def retrieve_results_for_detail_search(self, job_id: str):
-        results = self.call_api("GET",
-                                f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/"
-                                f"{job_id}/results",
-                                json_data={"job_id": job_id})
+        results = self.call_api(
+            "GET",
+            f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/" f"{job_id}/results",
+            json_data={"job_id": job_id},
+        )
         self.logger.info(f"Retrieve results are: {results}")
         return results
 
     def call_api(self, method: str, url: str, params: dict = None, data: str = None, json_data: object = None):
         try:
-            response = requests.request(method, url, headers=self.headers, params=params, data=data,
-                                        json=json_data)
+            response = requests.request(method, url, headers=self.headers, params=params, data=data, json=json_data)
 
             self.logger.info(f"The response is:{response.text}")
             if 200 <= response.status_code < 300:
@@ -78,8 +79,10 @@ class Connection(insightconnect_plugin_runtime.Connection):
             raise PluginException(
                 cause="Received an unexpected response from the server.",
                 assistance="(non-JSON or no response was received).",
-                data=e
+                data=e,
             )
+
+
 """""
     def test(self):
         host = self.host
@@ -98,4 +101,4 @@ class Connection(insightconnect_plugin_runtime.Connection):
             f"An unknown error occurred. Response code was: {result.status_code}"
             f" If the problem persists please contact support for help. Response was: {result.text}"
         )
-"""""
+""" ""

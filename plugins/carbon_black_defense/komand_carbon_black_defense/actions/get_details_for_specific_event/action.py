@@ -6,7 +6,6 @@ from .schema import GetDetailsForSpecificEventInput, GetDetailsForSpecificEventO
 
 
 class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
-
     def __init__(self):
         super(self.__class__, self).__init__(
             name="get_details_for_specific_event",
@@ -58,19 +57,18 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
             raise PluginException(
                 cause="Received an unexpected response from the server.",
                 assistance="(non-JSON or no response was received).",
-                data=response.text
+                data=response.text,
             )
         if response.status_code in range(500, 599):
 
             raise PluginException(
                 cause="Received an unexpected response from the server.",
                 assistance="(non-JSON or no response was received).",
-                data=response.text
+                data=response.text,
             )
         self.logger.error(response.text)
         raise PluginException(
             cause="Received an unexpected response from the server.",
             assistance="(non-JSON or no response was received).",
-            data=response.text
+            data=response.text,
         )
-

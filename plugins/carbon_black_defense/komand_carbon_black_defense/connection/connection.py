@@ -81,24 +81,3 @@ class Connection(insightconnect_plugin_runtime.Connection):
                 assistance="(non-JSON or no response was received).",
                 data=e,
             )
-
-
-"""""
-    def test(self):
-        host = self.host
-        token = self.token
-        connector = self.connector
-        devices = f"/appservices/v6/orgs/{self.org_key}/devices/_search"
-        headers = {"X-Auth-Token": f"{token}/{connector}"}
-        url = host + devices
-
-        result = requests.get(url, headers=headers)
-        if result.status_code == 200:
-            return {"success": True}
-        if result.status_code == 401:
-            raise ConnectionTestException(preset=ConnectionTestException.Preset.API_KEY)
-        raise ConnectionTestException(
-            f"An unknown error occurred. Response code was: {result.status_code}"
-            f" If the problem persists please contact support for help. Response was: {result.text}"
-        )
-""" ""

@@ -35,8 +35,6 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
             else:
                 break
 
-        try:
-
             response = self.connection.retrieve_results_for_detail_search(job_id=id_)
             data = insightconnect_plugin_runtime.helper.clean(response)
             self.logger.info(f"The data is: {data}")
@@ -45,30 +43,3 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
                 Output.EVENTINFO: data,
             }
 
-        except ValueError:
-            self.logger.error(response)
-            raise Exception(
-                f"Error: Received an unexpected response"
-                f" (non-JSON or no response was received). Raw response in logs."
-            )
-
-        if response.status_code in range(400, 499):
-
-            raise PluginException(
-                cause="Received an unexpected response from the server.",
-                assistance="(non-JSON or no response was received).",
-                data=response.text,
-            )
-        if response.status_code in range(500, 599):
-
-            raise PluginException(
-                cause="Received an unexpected response from the server.",
-                assistance="(non-JSON or no response was received).",
-                data=response.text,
-            )
-        self.logger.error(response.text)
-        raise PluginException(
-            cause="Received an unexpected response from the server.",
-            assistance="(non-JSON or no response was received).",
-            data=response.text,
-        )

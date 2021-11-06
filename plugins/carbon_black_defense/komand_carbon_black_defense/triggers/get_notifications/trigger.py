@@ -33,8 +33,8 @@ class GetNotifications(insightconnect_plugin_runtime.Trigger):
             except ValueError:
                 self.logger.error(result.text)
                 raise Exception(
-                    f"Error: Received an unexpected response"
-                    f" (non-JSON or no response was received). Raw response in logs."
+                    "Error: Received an unexpected response"
+                    " (non-JSON or no response was received). Raw response in logs."
                 )
             if "notifications" in data and len(data["notifications"]) > 0:
                 self.send(

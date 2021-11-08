@@ -13,6 +13,10 @@ This plugin uses the [Microsoft Teams API](https://docs.microsoft.com/en-us/grap
 * Username and Password
 * Secret Key, similar to API Key
 
+# Supported Product Versions
+
+_There are no supported product versions listed._
+
 # Documentation
 
 ## Setup
@@ -124,9 +128,10 @@ Regular expressions used by this action are Python specific.
 
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
-|channel_name|string|None|True|Channel|None|InsightConnect Channel|
+|channel_name|string|None|False|Channel|None|InsightConnect Channel|
+|chat_id|string|None|False|The ID of the chat|None|19:209856c0f3f847a28431deb8eb300807@thread.v2|
 |message|string|None|True|Message to send|None|Hello!|
-|team_name|string|None|True|Team name|None|InsightConnect Team|
+|team_name|string|None|False|Team name|None|InsightConnect Team|
 |thread_id|string|None|False|To post in a thread, select parent message ID|None|1595889908700|
 
 Example input:
@@ -134,6 +139,7 @@ Example input:
 ```
 {
   "channel_name": "InsightConnect Channel",
+  "chat_id": "19:209856c0f3f847a28431deb8eb300807@thread.v2",
   "message": "Hello!",
   "team_name": "InsightConnect Team",
   "thread_id": 1595889908700
@@ -873,6 +879,7 @@ If there is more than one team with the same name in your organization, the olde
 
 # Version History
 
+* 3.2.0 - Support sending chat messages in Send Message action
 * 3.1.4 - Update help.md to include troubleshooting message about team names
 * 3.1.3 - Update `docs_url` in plugin spec with a new link to [plugin setup guide](https://docs.rapid7.com/insightconnect/microsoft-teams/)
 * 3.1.2 - Fix issue where a name with a bracket could crash the plugin

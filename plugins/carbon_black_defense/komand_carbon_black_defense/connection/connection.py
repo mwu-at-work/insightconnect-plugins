@@ -54,7 +54,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
     def retrieve_results_for_detail_search(self, job_id: str):
         results = self.call_api(
             "GET",
-            f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/" f"{job_id}/results",
+            f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/{job_id}/results",
             json_data={"job_id": job_id},
         )
         self.logger.debug(f"Retrieve results are: {results}")

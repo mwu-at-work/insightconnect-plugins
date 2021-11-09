@@ -1,6 +1,7 @@
 import insightconnect_plugin_runtime
 from insightconnect_plugin_runtime.exceptions import PluginException
 import time
+from _datetime import datetime
 
 from .schema import GetDetailsForSpecificEventInput, GetDetailsForSpecificEventOutput, Input, Output
 
@@ -22,7 +23,9 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
         id_ = self.connection.get_job_id_for_detail_search(event_id=event_id)
         self.logger.info(f"The id is: {id_}")
         if id_ is None:
-            return {Output.EVENTINFO: {}}
+            return {
+                Output.SUCCESS: False,
+                Output.EVENTINFO: {}}
         detail_search_status = self.connection.check_status_of_detail_search(id_)
 
         # check if status of
@@ -31,6 +34,9 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
         for _ in range(0, 9999):
             if not detail_search_status:
                 detail_search_status = self.connection.check_status_of_detail_search(id_)
+                t1 = datetime.now()
+                if (datetime.now() - t1).seconds > 5:
+                    break
                 time.sleep(2)
             else:
                 break
@@ -40,5 +46,6 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
             self.logger.info(f"The data is: {data}")
 
             return {
+                Output.SUCCESS: True,
                 Output.EVENTINFO: data,
             }

@@ -223,6 +223,7 @@ Example input:
 |Name|Type|Required|Description|
 |----|----|--------|-----------|
 |eventinfo|event_info|False|Detailed information on the event|
+|success|boolean|False|Success|
 
 Example output:
 

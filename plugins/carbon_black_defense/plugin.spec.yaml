@@ -589,6 +589,11 @@ actions:
         required: true
         example: 422af3fc3a7411ea8da649e797467dc0
     output:
+      success:
+        title: Success
+        description: Success
+        type: boolean
+        required: false
       eventinfo:
         title: Event Info
         description: Detailed information on the event

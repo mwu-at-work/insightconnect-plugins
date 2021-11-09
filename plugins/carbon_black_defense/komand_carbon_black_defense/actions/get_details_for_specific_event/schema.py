@@ -13,6 +13,7 @@ class Input:
 
 class Output:
     EVENTINFO = "eventinfo"
+    SUCCESS = "success"
     
 
 class GetDetailsForSpecificEventInput(insightconnect_plugin_runtime.Input):
@@ -48,6 +49,12 @@ class GetDetailsForSpecificEventOutput(insightconnect_plugin_runtime.Output):
       "$ref": "#/definitions/event_info",
       "title": "Event Info",
       "description": "Detailed information on the event",
+      "order": 2
+    },
+    "success": {
+      "type": "boolean",
+      "title": "Success",
+      "description": "Success",
       "order": 1
     }
   },

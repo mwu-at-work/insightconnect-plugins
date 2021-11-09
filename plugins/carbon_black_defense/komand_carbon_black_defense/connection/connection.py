@@ -41,7 +41,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
     def check_status_of_detail_search(self, job_id: str = None):
         response = self.call_api(
             "GET",
-            f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/" f"{job_id}",
+            f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/{job_id}",
             json_data={"job_id": job_id},
         )
         self.logger.info(f"{response}")

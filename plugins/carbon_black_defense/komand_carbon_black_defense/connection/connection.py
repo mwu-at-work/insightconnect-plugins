@@ -57,7 +57,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/" f"{job_id}/results",
             json_data={"job_id": job_id},
         )
-        self.logger.info(f"Retrieve results are: {results}")
+        self.logger.debug(f"Retrieve results are: {results}")
         return results
 
     def call_api(self, method: str, url: str, params: dict = None, data: str = None, json_data: object = None):

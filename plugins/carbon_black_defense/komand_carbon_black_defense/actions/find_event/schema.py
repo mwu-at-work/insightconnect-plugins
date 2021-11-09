@@ -162,8 +162,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "device_external_ip": {
           "type": "string",
-          "title": "Device External Ip",
-          "description": "Device external ip",
+          "title": "Device External IP",
+          "description": "Device external IP",
           "order": 38
         },
         "device_group_id": {
@@ -186,8 +186,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "device_internal_ip": {
           "type": "string",
-          "title": "Device Internal Ip",
-          "description": "Device internal ip",
+          "title": "Device Internal IP",
+          "description": "Device internal IP",
           "order": 42
         },
         "device_location": {
@@ -276,8 +276,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "event_network_local_ipv4": {
           "type": "string",
-          "title": "Event Network Local Ipv4",
-          "description": "Event network local ipv4",
+          "title": "Event Network Local IPv4",
+          "description": "Event network local IPv4",
           "order": 43
         },
         "event_network_location": {
@@ -294,8 +294,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "event_network_remote_ipv4": {
           "type": "string",
-          "title": "Event Network Remote Ipv4",
-          "description": "Event network remote ipv4",
+          "title": "Event Network Remote IPv4",
+          "description": "Event network remote IPv4",
           "order": 33
         },
         "event_network_remote_port": {
@@ -351,14 +351,14 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "netconn_ipv4": {
           "type": "integer",
-          "title": "Netconn Ipv4",
-          "description": "Netconn ipv4",
+          "title": "Netconn IPv4",
+          "description": "Netconn IPv4",
           "order": 39
         },
         "netconn_local_ipv4": {
           "type": "integer",
-          "title": "Netconn Local Ipv4",
-          "description": "Netconn local ipv4",
+          "title": "Netconn Local IPv4",
+          "description": "Netconn local IPv4",
           "order": 28
         },
         "netconn_local_port": {

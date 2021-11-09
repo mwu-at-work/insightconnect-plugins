@@ -289,9 +289,9 @@ types:
       description: "Enriched"
       required: false
     netconn_local_ipv4:
-      title: "Netconn Local Ipv4"
+      title: "Netconn Local IPv4"
       type: integer
-      description: "Netconn local ipv4"
+      description: "Netconn local IPv4"
       required: false
     parent_hash:
       title: "Parent Hash"
@@ -314,9 +314,9 @@ types:
       description: "Process PID"
       required: false
     event_network_remote_ipv4:
-      title: "Event Network Remote Ipv4"
+      title: "Event Network Remote IPv4"
       type: string
-      description: "Event network remote ipv4"
+      description: "Event network remote IPv4"
       required: false
     process_hash:
       title: "Process Hash"
@@ -339,14 +339,14 @@ types:
       description: "Parent name"
       required: false
     device_external_ip:
-      title: "Device External Ip"
+      title: "Device External IP"
       type: string
-      description: "Device external ip"
+      description: "Device external IP"
       required: false
     netconn_ipv4:
-      title: "Netconn Ipv4"
+      title: "Netconn IPv4"
       type: integer
-      description: "Netconn ipv4"
+      description: "Netconn IPv4"
       required: false
     event_report_code:
       title: "Event Report Code"
@@ -359,14 +359,14 @@ types:
       description: "Event threat score"
       required: false
     device_internal_ip:
-      title: "Device Internal Ip"
+      title: "Device Internal IP"
       type: string
-      description: "Device internal ip"
+      description: "Device internal IP"
       required: false
     event_network_local_ipv4:
-      title: "Event Network Local Ipv4"
+      title: "Event Network Local IPv4"
       type: string
-      description: "Event network local ipv4"
+      description: "Event network local IPv4"
       required: false
     process_reputation:
       title: "Process Reputation"

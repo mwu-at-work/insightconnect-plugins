@@ -208,7 +208,7 @@ This action is used to retrieve details for an individual event given the event 
 
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
-|'event_id|string|None|True|Event ID|None|9de5069c5afe602b2ea0a04b66beb2c0'|
+|event_id|string|None|True|Event ID|None|9de5069c5afe602b2ea0a04b66beb2c0|
 
 Example input:
 

@@ -23,9 +23,7 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
         id_ = self.connection.get_job_id_for_detail_search(event_id=event_id)
         self.logger.info(f"The id is: {id_}")
         if id_ is None:
-            return {
-                Output.SUCCESS: False,
-                Output.EVENTINFO: {}}
+            return {Output.SUCCESS: False, Output.EVENTINFO: {}}
         detail_search_status = self.connection.check_status_of_detail_search(id_)
 
         # check if status of

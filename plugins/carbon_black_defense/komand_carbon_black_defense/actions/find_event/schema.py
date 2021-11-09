@@ -240,8 +240,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "document_guid": {
           "type": "string",
-          "title": "Document Guid",
-          "description": "Document guid",
+          "title": "Document GUID",
+          "description": "Document GUID",
           "order": 24
         },
         "enriched": {
@@ -405,8 +405,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "parent_guid": {
           "type": "string",
-          "title": "Parent Guid",
-          "description": "Parent guid",
+          "title": "Parent GUID",
+          "description": "Parent GUID",
           "order": 23
         },
         "parent_hash": {
@@ -426,8 +426,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "parent_pid": {
           "type": "integer",
-          "title": "Parent Pid",
-          "description": "Parent pid",
+          "title": "Parent PID",
+          "description": "Parent PID",
           "order": 57
         },
         "parent_reputation": {
@@ -468,8 +468,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "process_guid": {
           "type": "string",
-          "title": "Process Guid",
-          "description": "Process guid",
+          "title": "Process GUID",
+          "description": "Process GUID",
           "order": 50
         },
         "process_hash": {
@@ -489,8 +489,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "process_pid": {
           "type": "array",
-          "title": "Process Pid",
-          "description": "Process pid",
+          "title": "Process PID",
+          "description": "Process PID",
           "items": {
             "type": "integer"
           },
@@ -504,8 +504,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "process_sha256": {
           "type": "string",
-          "title": "Process Sha256",
-          "description": "Process sha256",
+          "title": "Process SHA-256",
+          "description": "Process SHA-256",
           "order": 36
         },
         "process_start_time": {
@@ -525,8 +525,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
         },
         "ttp": {
           "type": "array",
-          "title": "Ttp",
-          "description": "Ttp",
+          "title": "TTP",
+          "description": "TTP",
           "items": {
             "type": "string"
           },

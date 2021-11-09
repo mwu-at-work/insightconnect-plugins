@@ -234,9 +234,9 @@ types:
       description: "Netconn location"
       required: false
     ttp:
-      title: "Ttp"
+      title: "TTP"
       type: "[]string"
-      description: "Ttp"
+      description: "TTP"
       required: false
     netconn_domain:
       title: "Netconn Domain"
@@ -264,14 +264,14 @@ types:
       description: "Event id"
       required: false
     parent_guid:
-      title: "Parent Guid"
+      title: "Parent GUID"
       type: string
-      description: "Parent guid"
+      description: "Parent GUID"
       required: false
     document_guid:
-      title: "Document Guid"
+      title: "Document GUID"
       type: string
-      description: "Document guid"
+      description: "Document GUID"
       required: false
     process_cmdline_length:
       title: "Process Cmdline Length"
@@ -309,9 +309,9 @@ types:
       description: "Parent effective reputation source"
       required: false
     process_pid:
-      title: "Process Pid"
+      title: "Process PID"
       type: "[]integer"
-      description: "Process pid"
+      description: "Process PID"
       required: false
     event_network_remote_ipv4:
       title: "Event Network Remote Ipv4"
@@ -329,9 +329,9 @@ types:
       description: "Parent effective reputation"
       required: false
     process_sha256:
-      title: "Process Sha256"
+      title: "Process SHA-256"
       type: string
-      description: "Process sha256"
+      description: "Process SHA-256"
       required: false
     parent_name:
       title: "Parent Name"
@@ -399,9 +399,9 @@ types:
       description: "Event network inbound"
       required: false
     process_guid:
-      title: "Process Guid"
+      title: "Process GUID"
       type: string
-      description: "Process guid"
+      description: "Process GUID"
       required: false
     device_location:
       title: "Device Location"
@@ -434,9 +434,9 @@ types:
       description: "Backend timestamp"
       required: false
     parent_pid:
-      title: "Parent Pid"
+      title: "Parent PID"
       type: integer
-      description: "Parent pid"
+      description: "Parent PID"
       required: false
     device_policy:
       title: "Device Policy"

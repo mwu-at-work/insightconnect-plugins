@@ -1,5 +1,5 @@
 import insightconnect_plugin_runtime
-from .schema import FindEventInput, FindEventOutput, Output, Input, Output, Component
+from .schema import FindEventInput, FindEventOutput, Input, Output
 
 # Custom imports below
 import time

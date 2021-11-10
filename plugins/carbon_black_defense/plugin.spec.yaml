@@ -482,7 +482,7 @@ actions:
       order of time
     input:
       device_name:
-        title: "Device name"
+        title: "Device Name"
         description: "Device name"
         type: string
         required: false
@@ -494,9 +494,9 @@ actions:
         required: false
         example: "CONTOSO\\admin"
       device_external_ip:
-        title: "Device External Ip"
+        title: "Device External IP"
         type: string
-        description: "Device external ip"
+        description: "Device external IP"
         required: false
         example: "45.62.187.4"
       process_hash:

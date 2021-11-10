@@ -26,6 +26,54 @@ class Connection(insightconnect_plugin_runtime.Connection):
         self.connector = params.get(Input.CONNECTOR)
         self.headers = {"X-Auth-Token": f"{self.token}/{self.connector}"}
 
+    def get_job_id_for_enriched_event(self, process_name: str, event_id: str) -> Optional[str]:
+        response = self.call_api(
+            "POST",
+            f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs",
+            json_data={
+                "criteria": {
+                    "process_name": [process_name],
+                },
+                "event_ids": event_id,
+            },
+        ).get("job_id")
+
+        self.logger.info(f"The response is {response}.")
+        self.logger.info(f"The url is: {self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs)")
+        if response:
+            job_id = response
+            return job_id
+        return None
+
+    def get_enriched_event_status(self, job_id: str = None):
+        response = self.call_api(
+            "GET",
+            f"{self.host}/api/investigate/v1/orgs/{self.org_key}/enriched_events/search_jobs/{job_id}",
+            json_data={"cb_job_id": job_id},
+        )
+        self.logger.info(f"{response}")
+        self.logger.info(
+            f"The url is: {self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs/" f"{job_id}"
+        )
+        contacted = response.get("contacted")
+        completed = response.get("completed")
+        if contacted and completed and (contacted == completed):
+            return True
+        return False
+
+    def retrieve_results_for_enriched_event(self, job_id: str = None):
+        response = self.call_api(
+            "GET",
+            f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs/{job_id}/results",
+            json_data={"job_id": job_id},
+        )
+        self.logger.info(f"Retrieve results are: {response}")
+        self.logger.info(
+            f"The url is: {self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs/"
+            f"{job_id}/results"
+        )
+        return response
+
     def get_job_id_for_detail_search(self, event_id: str) -> Optional[str]:
         response = self.call_api(
             "POST",

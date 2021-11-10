@@ -1,15 +1,11 @@
 import insightconnect_plugin_runtime
-from .schema import FindEventInput, FindEventOutput, Output
+from .schema import FindEventInput, FindEventOutput, Output, Input, Output, Component
 
 # Custom imports below
-import requests
+import time
 
 
 class FindEvent(insightconnect_plugin_runtime.Action):
-
-    # URI for Find Event
-    _URI = "/integrationServices/v3/event/"
-
     def __init__(self):
         super(self.__class__, self).__init__(
             name="find_event",
@@ -18,51 +14,27 @@ class FindEvent(insightconnect_plugin_runtime.Action):
             output=FindEventOutput(),
         )
 
-    def run(self, params={}):
-        host = self.connection.host
-        token = self.connection.token
-        connector = self.connection.connector
-        payload = {}
-        for param in params:
-            if params[param]:
-                payload[param] = params[param]
-        self.logger.info(payload)
-        headers = {"X-Auth-Token": f"{token}/{connector}"}
-        url = host + FindEvent._URI
+    def run(self, params=None):
+        if params is None:
+            params = {}
+        process_name = params.get(Input.PROCESS_NAME)
+        event_id = params.get(Input.EVENT_ID)
+        id_ = self.connection.get_job_id_for_enriched_event(process_name=process_name, event_id=event_id)
+        self.logger.info(f"The id is: {id_}")
+        if id_ is None:
+            return {Output.EVENTINFO: {}}
+        enriched_event_search_status = self.connection.get_enriched_event_status(id_)
 
-        if payload:
-            result = requests.get(url, headers=headers, params=payload)
-        else:
-            result = requests.get(url, headers=headers)
-        try:
-            data = insightconnect_plugin_runtime.helper.clean(result.json())
-        except ValueError:
-            self.logger.error(result.text)
-            raise Exception(
-                "Error: Received an unexpected response"
-                " (non-JSON or no response was received). Raw response in logs."
-            )
-        if result.status_code == 200:
-            return {
-                Output.SUCCESS: data["success"],
-                Output.LATESTTIME: data["latestTime"],
-                Output.RESULTS: data["results"],
-                Output.ELAPSED: data["elapsed"],
-                Output.MESSAGE: data["message"],
-                Output.TOTALRESULTS: data["totalResults"],
-            }
-        if result.status_code in range(400, 499):
-            raise Exception(
-                f"Carbon Black returned a {result.status_code} code."
-                f" Verify the token and host configuration in the connection. Response was: {result.text}"
-            )
-        if result.status_code in range(500, 599):
-            raise Exception(
-                f"Carbon Black returned a {result.status_code} code."
-                f" If the problem persists please contact support for help. Response was: {result.text}"
-            )
-        self.logger.error(result.text)
-        raise Exception(
-            f"An unknown error occurred."
-            f" Carbon Black returned a {result.status_code} code. Contact support for help. Raw response in logs."
-        )
+        for _ in range(0, 9999):
+            if not enriched_event_search_status:
+                enriched_event_search_status = self.connection.get_enriched_event_status(id_)
+                time.sleep(2)
+            else:
+                break
+        response = self.connection.retrieve_results_for_enriched_event(job_id=id_)
+        data = insightconnect_plugin_runtime.helper.clean(response)
+        self.logger.info(f"The data is: {data}")
+
+        return {
+            Output.EVENTINFO: data,
+        }

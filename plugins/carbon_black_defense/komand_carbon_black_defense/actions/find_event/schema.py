@@ -30,8 +30,8 @@ class FindEventInput(insightconnect_plugin_runtime.Input):
   "properties": {
     "device_external_ip": {
       "type": "string",
-      "title": "Device External Ip",
-      "description": "Device external ip",
+      "title": "Device External IP",
+      "description": "Device external IP",
       "order": 3
     },
     "device_installed_by": {
@@ -42,7 +42,7 @@ class FindEventInput(insightconnect_plugin_runtime.Input):
     },
     "device_name": {
       "type": "string",
-      "title": "Device name",
+      "title": "Device Name",
       "description": "Device name",
       "order": 1
     },

@@ -81,23 +81,6 @@ types:
       description: SHA-256 Hash
       title: SHA-256 Hash
       type: string
-  policyAction:
-    action:
-      description: Policy Action
-      title: Policy Action
-      type: string
-    applicationName:
-      description: Application Name
-      title: Application Name
-      type: string
-    reputation:
-      description: Reputation
-      title: Reputation
-      type: string
-    sha256Hash:
-      description: SHA-256 Hash
-      title: SHA-256 Hash
-      type: string
   threatInfo:
     incidentId:
       description: Incident ID

@@ -49,7 +49,7 @@ This action is used to retrieve all events matching the input search criteria. R
 
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
-|device_external_ip|string|None|False|Device external ip|None|https://example.com|
+|device_external_ip|string|None|False|Device external IP|None|https://example.com|
 |device_installed_by|string|None|False|Device installed by|None|CONTOSO\admin|
 |device_name|string|None|False|Device name|None|CONTOSO\bruce-win10|
 |enriched_event_type|string|None|False|Enriched event type|None|SYSTEM_API_CALL|

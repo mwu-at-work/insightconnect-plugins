@@ -51,10 +51,6 @@ class Connection(insightconnect_plugin_runtime.Connection):
             f"{self.host}/api/investigate/v1/orgs/{self.org_key}/enriched_events/search_jobs/{job_id}",
             json_data={"cb_job_id": job_id},
         )
-        self.logger.info(f"{response}")
-        self.logger.info(
-            f"The url is: {self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs/" f"{job_id}"
-        )
         contacted = response.get("contacted")
         completed = response.get("completed")
         if contacted and completed and (contacted == completed):
@@ -67,11 +63,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs/{job_id}/results",
             json_data={"job_id": job_id},
         )
-        self.logger.info(f"Retrieve results are: {response}")
-        self.logger.info(
-            f"The url is: {self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs/"
-            f"{job_id}/results"
-        )
+
         return response
 
     def get_job_id_for_detail_search(self, event_id: str) -> Optional[str]:
@@ -80,7 +72,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs",
             json_data={"event_ids": [event_id]},
         ).get("job_id")
-        self.logger.info(f"The response is: {response}")
+
         if response:
             job_id = response
             return job_id
@@ -92,7 +84,6 @@ class Connection(insightconnect_plugin_runtime.Connection):
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/{job_id}",
             json_data={"job_id": job_id},
         )
-        self.logger.info(f"{response}")
         contacted = response.get("contacted")
         completed = response.get("completed")
         if contacted and completed and (contacted == completed):
@@ -105,14 +96,11 @@ class Connection(insightconnect_plugin_runtime.Connection):
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/{job_id}/results",
             json_data={"job_id": job_id},
         )
-        self.logger.debug(f"Retrieve results are: {results}")
         return results
 
     def call_api(self, method: str, url: str, params: dict = None, data: str = None, json_data: object = None):
         try:
             response = requests.request(method, url, headers=self.headers, params=params, data=data, json=json_data)
-
-            self.logger.info(f"The response is:{response.text}")
             if 200 <= response.status_code < 300:
                 return response.json()
             if 400 <= response.status_code < 500:

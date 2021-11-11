@@ -3,6 +3,7 @@ from .schema import FindEventInput, FindEventOutput, Input, Output
 
 # Custom imports below
 import time
+from datetime import datetime
 
 
 class FindEvent(insightconnect_plugin_runtime.Action):
@@ -25,15 +26,17 @@ class FindEvent(insightconnect_plugin_runtime.Action):
             return {Output.EVENTINFO: {}}
         enriched_event_search_status = self.connection.get_enriched_event_status(id_)
 
+        t1 = datetime.now()
         for _ in range(0, 9999):
             if not enriched_event_search_status:
                 enriched_event_search_status = self.connection.get_enriched_event_status(id_)
+                if (datetime.now() - t1).seconds > 5:
+                    break
                 time.sleep(2)
             else:
                 break
         response = self.connection.retrieve_results_for_enriched_event(job_id=id_)
         data = insightconnect_plugin_runtime.helper.clean(response)
-        self.logger.info(f"The data is: {data}")
 
         return {
             Output.EVENTINFO: data,

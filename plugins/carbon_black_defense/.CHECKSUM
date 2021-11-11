@@ -24,14 +24,6 @@
 			"hash": "98e2cf8bf394d0b6f97cdfeb657ea71b"
 		},
 		{
-			"identifier": "marshmallow/schema.py",
-			"hash": "7c9fc22caa77ab8be9957e79867f426a"
-		},
-		{
-			"identifier": "hello/schema.py",
-			"hash": "92ec4b966e523fe43b8d3e1589ecd235"
-		},
-		{
 			"identifier": "return_bad_json/schema.py",
 			"hash": "bb41c13e9e71e212c1545150a16f8b73"
 		},

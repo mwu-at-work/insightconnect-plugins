@@ -374,7 +374,7 @@ types:
     device_id:
       title: "Device ID"
       type: integer
-      description: "Device id"
+      description: "Device ID"
       required: false
     event_network_inbound:
       title: "Event Network Inbound"

@@ -83,8 +83,8 @@ class GetDetailsForSpecificEventOutput(insightconnect_plugin_runtime.Output):
         },
         "device_id": {
           "type": "integer",
-          "title": "Device Id",
-          "description": "Device id",
+          "title": "Device ID",
+          "description": "Device ID",
           "order": 48
         },
         "device_installed_by": {
@@ -119,8 +119,8 @@ class GetDetailsForSpecificEventOutput(insightconnect_plugin_runtime.Output):
         },
         "device_os_version": {
           "type": "string",
-          "title": "Device Os Version",
-          "description": "Device os version",
+          "title": "Device OS Version",
+          "description": "Device OS version",
           "order": 53
         },
         "device_policy": {
@@ -132,7 +132,7 @@ class GetDetailsForSpecificEventOutput(insightconnect_plugin_runtime.Output):
         "device_policy_id": {
           "type": "integer",
           "title": "Device Policy Id",
-          "description": "Device policy id",
+          "description": "Device policy ID",
           "order": 47
         },
         "device_target_priority": {
@@ -296,8 +296,8 @@ class GetDetailsForSpecificEventOutput(insightconnect_plugin_runtime.Output):
         },
         "org_id": {
           "type": "string",
-          "title": "Org Id",
-          "description": "Org id",
+          "title": "Org ID",
+          "description": "Org ID",
           "order": 54
         },
         "parent_effective_reputation": {

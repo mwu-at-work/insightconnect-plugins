@@ -15,9 +15,7 @@ class FindEvent(insightconnect_plugin_runtime.Action):
             output=FindEventOutput(),
         )
 
-    def run(self, params=None):
-        if params is None:
-            params = {}
+    def run(self, params={}):
         process_name = params.get(Input.PROCESS_NAME)
         event_id = params.get(Input.EVENT_ID)
         id_ = self.connection.get_job_id_for_enriched_event(process_name=process_name, event_id=event_id)

@@ -15,10 +15,7 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
             output=GetDetailsForSpecificEventOutput(),
         )
 
-    def run(self, params=None):
-
-        if params is None:
-            params = {}
+    def run(self, params={}):
         event_id = params.get(Input.EVENT_ID)
         id_ = self.connection.get_job_id_for_detail_search(event_id=event_id)
         self.logger.info(f"The id is: {id_}")

@@ -369,7 +369,7 @@ types:
     device_policy_id:
       title: "Device Policy Id"
       type: integer
-      description: "Device policy id"
+      description: "Device policy ID"
       required: false
     device_id:
       title: "Device Id"

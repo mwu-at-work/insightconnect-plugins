@@ -402,9 +402,9 @@ types:
       description: "Device OS version"
       required: false
     org_id:
-      title: "Org Id"
+      title: "Org ID"
       type: string
-      description: "Org id"
+      description: "Org ID"
       required: false
     device_name:
       title: "Device Name"

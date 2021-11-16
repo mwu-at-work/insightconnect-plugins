@@ -1,15 +1,15 @@
 import sys
 import os
-sys.path.append(os.path.abspath('../tests/'))
+
+sys.path.append(os.path.abspath("../tests/"))
 
 from unittest import TestCase
-from komand_carbon_black_defense.connection.connection  import Connection
+from komand_carbon_black_defense.connection.connection import Connection
 from komand_carbon_black_defense.actions.find_event import FindEvent
 import json
 import logging
-from unittest.mock import patch
-from parameterized import parameterized
 from insightconnect_plugin_runtime.exceptions import PluginException
+
 
 class TestFindEvent(TestCase):
     def test_integration_find_event(self):
@@ -27,12 +27,12 @@ class TestFindEvent(TestCase):
                 connection_params = test_json.get("connection")
                 action_params = test_json.get("input")
         except PluginException as e:
-            message = '''
+            message = """
             Could not find or read sample tests from /tests directory
 
             An exception here likely means you didn't fill out your samples correctly in the /tests directory
             Please use 'icon-plugin generate samples', and fill out the resulting test files in the /tests directory
-        '''
+        """
             self.fail(message)
 
         test_conn.connect(connection_params)

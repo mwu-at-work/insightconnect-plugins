@@ -372,7 +372,7 @@ types:
       description: "Device policy ID"
       required: false
     device_id:
-      title: "Device Id"
+      title: "Device ID"
       type: integer
       description: "Device id"
       required: false

@@ -38,7 +38,6 @@ class Connection(insightconnect_plugin_runtime.Connection):
             },
         ).get("job_id")
 
-        self.logger.info(f"The response is {response}.")
         if response:
             job_id = response
             return job_id

@@ -1,14 +1,13 @@
+from unittest import TestCase
+from komand_carbon_black_defense.connection.connection import Connection
+from komand_carbon_black_defense.actions.find_event import FindEvent
+from insightconnect_plugin_runtime.exceptions import PluginException
+import json
+import logging
 import sys
 import os
 
 sys.path.append(os.path.abspath("../tests/"))
-
-from unittest import TestCase
-from komand_carbon_black_defense.connection.connection import Connection
-from komand_carbon_black_defense.actions.find_event import FindEvent
-import json
-import logging
-from insightconnect_plugin_runtime.exceptions import PluginException
 
 
 class TestFindEvent(TestCase):
@@ -22,11 +21,11 @@ class TestFindEvent(TestCase):
         test_action.logger = log
 
         try:
-            with open("../tests/find_event.json") as file:
+            with open("../tests/find_event.json", encoding="utf-8") as file:
                 test_json = json.loads(file.read()).get("body")
                 connection_params = test_json.get("connection")
                 action_params = test_json.get("input")
-        except PluginException as e:
+        except PluginException:
             message = """
             Could not find or read sample tests from /tests directory
 

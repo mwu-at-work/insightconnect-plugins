@@ -374,7 +374,7 @@ types:
     device_id:
       title: "Device ID"
       type: integer
-      description: "Device id"
+      description: "Device ID"
       required: false
     event_network_inbound:
       title: "Event Network Inbound"
@@ -397,9 +397,9 @@ types:
       description: "Netconn local port"
       required: false
     device_os_version:
-      title: "Device Os Version"
+      title: "Device OS Version"
       type: string
-      description: "Device os version"
+      description: "Device OS version"
       required: false
     org_id:
       title: "Org Id"

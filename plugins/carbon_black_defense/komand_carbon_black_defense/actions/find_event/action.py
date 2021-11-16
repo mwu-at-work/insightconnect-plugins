@@ -19,7 +19,7 @@ class FindEvent(insightconnect_plugin_runtime.Action):
         process_name = params.get(Input.PROCESS_NAME)
         event_id = params.get(Input.EVENT_ID)
         id_ = self.connection.get_job_id_for_enriched_event(process_name=process_name, event_id=event_id)
-        self.logger.info("Got enriched event job ID: {}".format(id_))
+        self.logger.info("Got enriched event job ID: %s ." % id_)
         if id_ is None:
             return {Output.EVENTINFO: {}}
         enriched_event_search_status = self.connection.get_enriched_event_status(id_)

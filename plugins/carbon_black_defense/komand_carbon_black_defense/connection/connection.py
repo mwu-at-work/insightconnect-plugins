@@ -41,7 +41,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
             return job_id
         return None
 
-    def get_enriched_event_status(self, job_id: str = None):
+    def get_enriched_event_status(self, job_id: str = None) -> bool:
         response = self.call_api(
             "GET",
             f"{self.host}/api/investigate/v1/orgs/{self.org_key}/enriched_events/search_jobs/{job_id}",

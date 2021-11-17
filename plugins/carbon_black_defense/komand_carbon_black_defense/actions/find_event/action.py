@@ -2,15 +2,16 @@ import insightconnect_plugin_runtime
 from .schema import FindEventInput, FindEventOutput, Input, Output
 
 # Custom imports below
-import time
-from datetime import datetime
+from _datetime import datetime
 
 
 class FindEvent(insightconnect_plugin_runtime.Action):
     def __init__(self):
         super(self.__class__, self).__init__(
             name="find_event",
-            description="Retrieves all events matching the input search criteria. Response is a list of events in JSON format. Resulting events are sorted in descending order of time",
+            description="Retrieves all events matching the input search criteria. "
+                        "Response is a list of events in JSON format."
+                        "Resulting events are sorted in descending order of time",
             input=FindEventInput(),
             output=FindEventOutput(),
         )
@@ -28,9 +29,8 @@ class FindEvent(insightconnect_plugin_runtime.Action):
         for _ in range(0, 9999):
             if not enriched_event_search_status:
                 enriched_event_search_status = self.connection.get_enriched_event_status(id_)
-                if (datetime.now() - t1).seconds > 5:
+                if (datetime.now() - t1).seconds > 60:
                     break
-                time.sleep(2)
             else:
                 break
         response = self.connection.retrieve_results_for_enriched_event(job_id=id_)

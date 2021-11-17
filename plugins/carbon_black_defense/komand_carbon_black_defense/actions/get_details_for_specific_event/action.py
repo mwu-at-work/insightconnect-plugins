@@ -1,7 +1,6 @@
 import insightconnect_plugin_runtime
-from insightconnect_plugin_runtime.exceptions import PluginException
-import time
 from .schema import GetDetailsForSpecificEventInput, GetDetailsForSpecificEventOutput, Input, Output
+from _datetime import datetime
 
 
 class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
@@ -25,14 +24,14 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
         # check if status of
         # detail search is complete by checking if the completed property
         # in results is not equal to the contacted property
-
+        t1 = datetime.now()
         for _ in range(0, 9999):
             if not detail_search_status:
                 detail_search_status = self.connection.check_status_of_detail_search(id_)
-                time.sleep(2)
+                if (datetime.now() - t1).seconds > 60:
+                    break
             else:
                 break
-
             response = self.connection.retrieve_results_for_detail_search(job_id=id_)
             data = insightconnect_plugin_runtime.helper.clean(response)
 

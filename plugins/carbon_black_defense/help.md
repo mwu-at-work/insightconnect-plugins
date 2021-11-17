@@ -370,6 +370,7 @@ _This plugin does not contain any custom output types._
 When selecting adjusting frequency please review [rate limits](https://developer.carbonblack.com/reference/carbon-black-cloud/rate-limiting/).
 Get Notifications trigger requires that the [API key type](https://developer.carbonblack.com/reference/carbon-black-cloud/authentication/) is a 'SIEM' type.
 The Role Based Access Control (RBAC) of your API Key will require the right permissions as noted in the following link: [https://developer.carbonblack.com/reference/carbon-black-cloud/cb-defense/latest/platform-search-api-enriched-events/#authentication](https://developer.carbonblack.com/reference/carbon-black-cloud/cb-defense/latest/platform-search-api-enriched-events/#authentication).
+
 The Find Event API and Get Details for Specific Event API are now documented as Enriched Events Search and Enriched Event Details Search at the following links: [https://developer.carbonblack.com/reference/carbon-black-cloud/cb-defense/latest/platform-search-api-enriched-events/#start-an-enriched-events-search-v2](https://developer.carbonblack.com/reference/carbon-black-cloud/cb-defense/latest/platform-search-api-enriched-events/#start-an-enriched-events-search-v2) and [https://developer.carbonblack.com/reference/carbon-black-cloud/cb-defense/latest/platform-search-api-enriched-events/#request-details-for-enriched-events-v2](https://developer.carbonblack.com/reference/carbon-black-cloud/cb-defense/latest/platform-search-api-enriched-events/#request-details-for-enriched-events-v2).
 # Version History
 

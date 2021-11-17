@@ -16,9 +16,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
 
         self.job_id = None
 
-    def connect(self, params=None):
-        if params is None:
-            params = {}
+    def connect(self, params={}):
         self.logger.info("Connect: Connecting..")
         self.host = params.get(Input.URL)
         self.token = params.get(Input.API_KEY).get("secretKey")

@@ -10,8 +10,8 @@ class FindEvent(insightconnect_plugin_runtime.Action):
         super(self.__class__, self).__init__(
             name="find_event",
             description="Retrieves all events matching the input search criteria. "
-                        "Response is a list of events in JSON format."
-                        "Resulting events are sorted in descending order of time",
+            "Response is a list of events in JSON format."
+            "Resulting events are sorted in descending order of time",
             input=FindEventInput(),
             output=FindEventOutput(),
         )

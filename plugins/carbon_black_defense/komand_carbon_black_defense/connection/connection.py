@@ -74,7 +74,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
             return job_id
         return None
 
-    def check_status_of_detail_search(self, job_id: str = None):
+    def check_status_of_detail_search(self, job_id: str = None) -> bool:
         response = self.call_api(
             "GET",
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs/{job_id}",

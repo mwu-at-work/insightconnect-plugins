@@ -1,19 +1,18 @@
 name: Greetings
 
-on: [pull_request, issues]
+on: [pull_request]
 
 jobs:
   greeting:
     runs-on: ubuntu-latest
     permissions:
-      issues: write
       pull-requests: write
     steps:
     - uses: actions/first-interaction@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        pr-message: 'Hi @user, thank you for the contribution! There are a few additional steps we ask you to take before we can approve this PR. These steps are documented on our Plugin Development docs here: https://docs.rapid7.com/insightconnect/getting-started/* Please include some unit tests that cover this code change, if possible. Documentation here: https://docs.rapid7.com/insightconnect/unit-test-primer
+        pr-message: "Hi @user, thank you for the contribution! There are a few additional steps we ask you to take before we can approve this PR. These steps are documented on our Plugin Development docs here: https://docs.rapid7.com/insightconnect/getting-started/* Please include some unit tests that cover this code change, if possible. Documentation here: https://docs.rapid7.com/insightconnect/unit-test-primer
                     * Please bump the minor version number of the plugin in the [`plugin.spec.yaml`](https://github.com/rapid7/insightconnect-plugins/blob/master/plugins/jira/plugin.spec.yaml#L10) and the [`setup.py`](https://github.com/rapid7/insightconnect-plugins/blob/master/plugins/jira/setup.py#L6) files.
                     * Please describe the change in the Version History section of the [`help.md`](https://github.com/rapid7/insightconnect-plugins/blob/master/plugins/jira/help.md#version-history) file.
                     * Please regenerate the plugin using the `icon-plugin` tool. You will need to be in the `insightconnect-plugins/plugins/jira` path and run `icon-plugin generate --regenerate python plugin.spec.yaml`. This will update the `.CHECKSUM` file. This is documented here: https://docs.rapid7.com/insightconnect/regenerating-plugins/
-                    * Please confirm that the PR passes our GitHub Actions validation checks.Please let us know if you have any questions or concerns.
+                    * Please confirm that the PR passes our GitHub Actions validation checks. Please let us know if you have any questions or concerns."

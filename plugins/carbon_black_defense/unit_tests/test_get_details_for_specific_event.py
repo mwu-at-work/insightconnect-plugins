@@ -39,3 +39,16 @@ class TestGetDetailsForSpecificEvent(TestCase):
         results = test_action.run(action_params)
 
         self.assertIsNotNone(results)
+
+
+def read_file_to_string(filename):
+    with open(filename) as my_file:
+        return my_file.read()
+
+
+def load_data(filename):
+    return json.loads(
+        read_file_to_string(
+            os.path.join(os.path.dirname(os.path.realpath(__file__)), f"payloads/{filename}.json.resp")
+        )
+    )

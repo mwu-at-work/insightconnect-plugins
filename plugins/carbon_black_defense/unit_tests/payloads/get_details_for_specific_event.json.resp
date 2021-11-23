@@ -1,0 +1,19 @@
+{
+  "body": {
+    "action": "get_details_for_specific_event",
+    "connection": {
+      "api_key": {
+        "secretKey": "B415DJWQ34TCR99QVHZ42J1A"
+      },
+      "connector": "2U14HDTMSJ",
+      "org_key": "7DESJ9GN",
+      "url": "https://defense.conferdeploy.net"
+    },
+    "input": {
+      "event_id": "d256ef9643ef11ec855191ef00b77ba1"
+    },
+    "meta": {}
+  },
+  "type": "action_start",
+  "version": "v1",
+}

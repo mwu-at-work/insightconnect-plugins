@@ -1,11 +1,15 @@
 import re
-import tqdm
-import entropy
+import math
 from tld import get_tld
 from Levenshtein import distance
-from termcolor import colored, cprint
-
 from .suspicious import keywords, tlds
+
+
+def entropy(string):
+    """Calculates the Shannon entropy of a string"""
+    prob = [float(string.count(c)) / len(string) for c in dict.fromkeys(list(string))]
+    ent = -sum([p * math.log(p) / math.log(2.0) for p in prob])
+    return ent
 
 
 def score_domain(domain):
@@ -47,8 +51,8 @@ def score_domain(domain):
         if word in domain:
             score += keywords[word]
 
-    # Higer entropy is kind of suspicious
-    score += int(round(entropy.shannon_entropy(domain) * 50))
+    # Higher entropy is kind of suspicious
+    score += int(round(entropy(domain) * 10))
 
     # Testing Levenshtein distance for strong keywords (>= 70 points) (ie. paypol)
     for key in [k for (k, s) in keywords.items() if s >= 70]:

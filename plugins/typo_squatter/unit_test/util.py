@@ -37,4 +37,4 @@ class Util:
             return MockRun("check_for_squatters_with_flag")
         if args[0] == ["dnstwist", "-f", "json", "rapid7.com"]:
             return MockRun("check_for_squatters_without_flag")
-        raise Exception("Unimplemented test")
+        raise Exception("Not implemented")

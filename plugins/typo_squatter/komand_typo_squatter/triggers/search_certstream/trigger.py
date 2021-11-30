@@ -31,7 +31,7 @@ class SearchCertstream(insightconnect_plugin_runtime.Trigger):
                 score = utils.score_domain(domain.lower())
 
                 # If issued from a free CA = more suspicious
-                if "Let's Encrypt" == message.get("data", {}).get("leaf_cert", {}).get("issuer", {}).get("O"):
+                if "Let's Encrypt" in message.get("data", {}).get("leaf_cert", {}).get("issuer", {}).get("O"):
                     score += 10
                 if self.query:
                     if not re.search(self.query, domain):

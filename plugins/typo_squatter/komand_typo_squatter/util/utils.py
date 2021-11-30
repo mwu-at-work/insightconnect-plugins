@@ -1,3 +1,7 @@
+from insightconnect_plugin_runtime.exceptions import PluginException
+import subprocess
+import validators
+import json
 import re
 import math
 from tld import get_tld
@@ -5,14 +9,41 @@ from Levenshtein import distance
 from .suspicious import keywords, tlds
 
 
-def entropy(string):
+def check_for_squatters(domain: str, flag: str, logger) -> list:
+    if not validators.domain(domain):
+        raise PluginException(
+            cause="Invalid domain provided.", assistance="Please provide a valid domain and try again."
+        )
+    cmd = f"dnstwist {flag} -f json {domain}" if flag else f"dnstwist -f json {domain}"
+    logger.info(f"Running command: {cmd}")
+    results = subprocess.run(cmd.split(" "), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    error = results.stderr.decode()
+    if error:
+        if "unrecognized arguments" in error:
+            raise PluginException(
+                cause="Invalid flag provided.", assistance="Please provide a valid flag and try again.", data=error
+            )
+        else:
+            raise PluginException(
+                cause=f"An error occured while executing the command: {cmd}.",
+                assistance="Please try again and contact support if the problem persists.",
+                data=error,
+            )
+    js = json.loads(results.stdout.decode().replace("\\n", ""))
+    for _, item in enumerate(js):
+        js[_]["phishing_score"] = score_domain(js[_].get("domain-name"))
+
+    return js
+
+
+def entropy(string: str) -> float:
     """Calculates the Shannon entropy of a string"""
     prob = [float(string.count(c)) / len(string) for c in dict.fromkeys(list(string))]
     ent = -sum([p * math.log(p) / math.log(2.0) for p in prob])
     return ent
 
 
-def score_domain(domain):
+def score_domain(domain: str) -> int:
     """Score `domain`.
     The highest score, the most probable `domain` is a phishing site.
     Args:

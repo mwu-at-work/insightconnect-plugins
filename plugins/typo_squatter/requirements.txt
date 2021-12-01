@@ -12,3 +12,4 @@ whois==0.9.13
 GeoIP==1.3.2
 ssdeep==3.4
 validators==0.18.2
+parameterized==0.8.1

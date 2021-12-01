@@ -48,4 +48,4 @@ class SearchCertstream(insightconnect_plugin_runtime.Trigger):
         self.query = params.get(Input.QUERY)
         self.levenshtein = params.get(Input.LEVENSHTEIN)
         self.domain = params.get(Input.DOMAIN)
-        certstream.listen_for_events(self.callback)
+        certstream.listen_for_events(self.callback, "wss://certstream.calidog.io")

@@ -18,7 +18,7 @@ class SearchCertstream(insightconnect_plugin_runtime.Trigger):
         self.query = ""
         self.levenshtein = 0
 
-    def callback(self, message, context):
+    def callback(self, message, context):  # pylint: disable=unused-argument
         """Callback handler for certstream events."""
         message_type = message.get("message_type")
         if message_type == "heartbeat":

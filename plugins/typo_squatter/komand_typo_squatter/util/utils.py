@@ -1,5 +1,5 @@
 from insightconnect_plugin_runtime.exceptions import PluginException
-import subprocess
+import subprocess  # nosec
 import validators
 import json
 import re
@@ -16,7 +16,7 @@ def check_for_squatters(domain: str, flag: str, logger) -> list:
         )
     cmd = f"dnstwist {flag} -f json {domain}" if flag else f"dnstwist -f json {domain}"
     logger.info(f"Running command: {cmd}")
-    results = subprocess.run(cmd.split(" "), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    results = subprocess.run(cmd.split(" "), stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
     error = results.stderr.decode()
     if error:
         if "unrecognized arguments" in error:
@@ -31,7 +31,7 @@ def check_for_squatters(domain: str, flag: str, logger) -> list:
             )
     js = json.loads(results.stdout.decode().replace("\\n", ""))
     for _, item in enumerate(js):
-        js[_]["phishing_score"] = score_domain(js[_].get("domain-name"))
+        js[_]["phishing_score"] = score_domain(item.get("domain-name"))
 
     return js
 
@@ -78,9 +78,9 @@ def score_domain(domain: str) -> int:
             score += 10
 
     # Testing keywords
-    for word in keywords.keys():
-        if word in domain:
-            score += keywords[word]
+    for word in keywords.items():
+        if word[0] in domain:
+            score += word[1]
 
     # Higher entropy is kind of suspicious
     score += int(round(entropy(domain) * 10))

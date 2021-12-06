@@ -1,39 +1,8 @@
-from insightconnect_plugin_runtime.exceptions import PluginException
-import subprocess  # nosec
-import validators
-import json
 import re
 import math
 from tld import get_tld
 from Levenshtein import distance
 from .suspicious import keywords, tlds
-
-
-def check_for_squatters(domain: str, flag: str, logger) -> list:
-    if not validators.domain(domain):
-        raise PluginException(
-            cause="Invalid domain provided.", assistance="Please provide a valid domain and try again."
-        )
-    cmd = f"dnstwist {flag} -f json {domain}" if flag else f"dnstwist -f json {domain}"
-    logger.info(f"Running command: {cmd}")
-    results = subprocess.run(cmd.split(" "), stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-    error = results.stderr.decode()
-    if error:
-        if "unrecognized arguments" in error:
-            raise PluginException(
-                cause="Invalid flag provided.", assistance="Please provide a valid flag and try again.", data=error
-            )
-        else:
-            raise PluginException(
-                cause=f"An error occured while executing the command: {cmd}.",
-                assistance="Please try again and contact support if the problem persists.",
-                data=error,
-            )
-    js = json.loads(results.stdout.decode().replace("\\n", ""))
-    for _, item in enumerate(js):
-        js[_]["phishing_score"] = score_domain(item.get("domain-name"))
-
-    return js
 
 
 def entropy(string: str) -> float:

@@ -30,9 +30,9 @@ class CheckForSquatters(insightconnect_plugin_runtime.Action):
             )
         cmd = f"dnstwist {flag} -f json {domain}" if flag else f"dnstwist -f json {domain}"
         self.logger.info(f"Running command: {cmd}")
-        results = subprocess.run(
+        results = subprocess.run(  # nosec B603
             cmd.split(" "), stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True
-        )  # nosec B603
+        )
         error = results.stderr.decode()
         if error:
             if "unrecognized arguments" in error:

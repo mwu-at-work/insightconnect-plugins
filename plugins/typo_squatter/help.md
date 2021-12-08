@@ -55,7 +55,7 @@ Example input:
 
 #### Score Domain
 
-This action is used to get phishing score for domain. score > 90: very suspicious, > 65 likely phishing.
+This action is used to get phishing score for a domain. Scores over 65 should be considered likely phishing attempts with scores over 90 being very suspicious.
 
 ##### Input
 

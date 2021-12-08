@@ -4,7 +4,7 @@ import json
 
 
 class Component:
-    DESCRIPTION = "Get phishing score for domain. score > 90: very suspicious, > 65 likely phishing"
+    DESCRIPTION = "Get phishing score for a domain. Scores over 65 should be considered likely phishing attempts with scores over 90 being very suspicious"
 
 
 class Input:

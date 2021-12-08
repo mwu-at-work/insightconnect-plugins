@@ -6,7 +6,10 @@ from .suspicious import keywords, tlds
 
 
 def entropy(string: str) -> float:
-    """Calculates the Shannon entropy of a string"""
+    """
+    Calculates the Shannon entropy of a string
+    Original code: https://github.com/x0rz/phishing_catcher/blob/master/catch_phishing.py
+    """
     prob = [float(string.count(c)) / len(string) for c in dict.fromkeys(list(string))]
     ent = -sum([p * math.log(p) / math.log(2.0) for p in prob])
     return ent

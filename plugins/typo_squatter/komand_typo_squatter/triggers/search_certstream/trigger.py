@@ -1,9 +1,12 @@
 import insightconnect_plugin_runtime
+from .schema import SearchCertstreamInput, SearchCertstreamOutput, Input, Output, Component
+
+# Custom imports below
+from insightconnect_plugin_runtime.exceptions import PluginException
 import certstream
 import re
 import Levenshtein
 from komand_typo_squatter.util import utils
-from .schema import SearchCertstreamInput, SearchCertstreamOutput, Input, Output, Component
 
 
 class SearchCertstream(insightconnect_plugin_runtime.Trigger):
@@ -42,6 +45,10 @@ class SearchCertstream(insightconnect_plugin_runtime.Trigger):
                     if Levenshtein.distance(str(self.domain), str(domain)) > self.levenshtein:
                         continue
                 self.send({Output.DOMAIN: domain, Output.SCORE: score})
+        else:
+            raise PluginException(
+                cause="An unrecognized message type was returned.", assistance="Please contact support."
+            )
 
     def run(self, params={}):
         """Run the trigger"""

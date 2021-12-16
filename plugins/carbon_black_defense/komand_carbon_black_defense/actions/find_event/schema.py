@@ -12,18 +12,18 @@ class Input:
     DEVICE_INSTALLED_BY = "device_installed_by"
     DEVICE_NAME = "device_name"
     ENRICHED_EVENT_TYPE = "enriched_event_type"
-    EVENT_ID = "event_id"
     PROCESS_HASH = "process_hash"
     PROCESS_NAME = "process_name"
-    
+
 
 class Output:
     EVENTINFO = "eventinfo"
     SUCCESS = "success"
-    
+
 
 class FindEventInput(insightconnect_plugin_runtime.Input):
-    schema = json.loads("""
+    schema = json.loads(
+        """
    {
   "type": "object",
   "title": "Variables",
@@ -52,12 +52,6 @@ class FindEventInput(insightconnect_plugin_runtime.Input):
       "description": "Enriched event type",
       "order": 6
     },
-    "event_id": {
-      "type": "string",
-      "title": "Event ID",
-      "description": "Event ID",
-      "order": 7
-    },
     "process_hash": {
       "type": "array",
       "title": "SHA-256 Hash",
@@ -73,19 +67,18 @@ class FindEventInput(insightconnect_plugin_runtime.Input):
       "description": "Process name",
       "order": 5
     }
-  },
-  "required": [
-    "event_id"
-  ]
+  }
 }
-    """)
+    """
+    )
 
     def __init__(self):
         super(self.__class__, self).__init__(self.schema)
 
 
 class FindEventOutput(insightconnect_plugin_runtime.Output):
-    schema = json.loads("""
+    schema = json.loads(
+        """
    {
   "type": "object",
   "title": "Variables",
@@ -490,7 +483,8 @@ class FindEventOutput(insightconnect_plugin_runtime.Output):
     }
   }
 }
-    """)
+    """
+    )
 
     def __init__(self):
         super(self.__class__, self).__init__(self.schema)

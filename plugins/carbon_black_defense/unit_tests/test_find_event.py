@@ -1,41 +1,54 @@
-from unittest import TestCase
-from komand_carbon_black_defense.connection.connection import Connection
-from komand_carbon_black_defense.actions.find_event import FindEvent
-from insightconnect_plugin_runtime.exceptions import PluginException
-import json
-import logging
 import sys
 import os
 
 sys.path.append(os.path.abspath("../tests/"))
 
+from unittest import TestCase
+from unittest.mock import patch
+
+
+from komand_carbon_black_defense.actions.find_event import FindEvent
+from komand_carbon_black_defense.actions.find_event.schema import Input as FindEventSchemaInput
+from unit_tests.util import Util
+from insightconnect_plugin_runtime.exceptions import PluginException
+
 
 class TestFindEvent(TestCase):
-    def test_integration_find_event(self):
+    @classmethod
+    @patch("requests.request", side_effect=Util.mock_request)
+    def setUpClass(cls, mock_request) -> None:
+        cls.connection, cls.action = Util.default_connector(FindEvent())
 
-        log = logging.getLogger("Test")
-        test_conn = Connection()
-        test_action = FindEvent()
+    # approach: testing users input that could mess up action - user input changes / api changes
+    # test not entering an org key
+    @patch("requests.request", side_effect=Util.mock_request)
+    def test_get_job_id_for_enriched_event_empty_org_key(self, make_request):
+        temp_org_key = self.action.connection.org_key
+        self.action.connection.org_key = ""
+        with self.assertRaises(PluginException) as exception:
+            self.action.run({FindEventSchemaInput.PROCESS_NAME: "chrome.exe"})
+        cause = "There's no org key input."
+        self.assertEqual(exception.exception.cause, cause)
+        self.action.connection.org_key = temp_org_key
 
-        test_conn.logger = log
-        test_action.logger = log
+    # test entering a valid org key
+    @patch("requests.request", side_effect=Util.mock_request)
+    def test_get_job_id_for_enriched_event_valid_org_key(self, make_request):
+        actual = self.action.connection.get_job_id_for_enriched_event({FindEventSchemaInput.PROCESS_NAME: "chrome.exe"})
+        expected = Util.read_file_to_dict("payloads/post_with_valid_org_key_find_event.json.resp")["job_id"]
+        self.assertEqual(expected, actual)
 
-        try:
-            with open("../tests/find_event.json", encoding="utf-8") as file:
-                test_json = json.loads(file.read()).get("body")
-                connection_params = test_json.get("connection")
-                action_params = test_json.get("input")
-        except PluginException:
-            message = """
-            Could not find or read sample tests from /tests directory
+    # testing a user not inputting any criteria to search by
+    @patch("requests.request", side_effect=Util.mock_request)
+    def test_get_job_id_for_enriched_event_with_no_criteria(self, make_request):
+        with self.assertRaises(PluginException) as exception:
+            self.action.run({FindEventSchemaInput.PROCESS_NAME: ""})
+        cause = "Error. Have not entered a criteria for action to run."
+        self.assertEqual(exception.exception.cause, cause)
 
-            An exception here likely means you didn't fill out your samples correctly in the /tests directory
-            Please use 'icon-plugin generate samples', and fill out the resulting test files in the /tests directory
-        """
-            self.fail(message)
-
-        test_conn.connect(connection_params)
-        test_action.connection = test_conn
-        results = test_action.run(action_params)
-
-        self.assertIsNotNone(results)
+    # testing if the criteria type is correct
+    @patch("requests.request", side_effect=Util.mock_request)
+    def test_get_job_id_for_enriched_event_with_criteria(self, make_request):
+        actual = self.action.connection.get_job_id_for_enriched_event({FindEventSchemaInput.PROCESS_NAME: "chrome.exe"})
+        expected = Util.read_file_to_dict("payloads/post_with_valid_org_key_find_event.json.resp")["job_id"]
+        self.assertEqual(expected, actual)

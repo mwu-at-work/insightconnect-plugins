@@ -143,7 +143,7 @@ types:
       required: false
     process_name:
       title: "Process Name"
-      type: string
+      type: "[]string"
       description: "Process name"
       required: false
     device_target_priority:
@@ -208,7 +208,7 @@ types:
       required: false
     device_timestamp:
       title: "Device Timestamp"
-      type: string
+      type: date
       description: "Device timestamp"
       required: false
     netconn_location:
@@ -236,11 +236,6 @@ types:
       type: "[]string"
       description: "Process cmdline"
       required: false
-    device_installed_by:
-      title: "Device Installed By"
-      type: string
-      description: "Device installed by"
-      required: false
     event_id:
       title: "Event Id"
       type: string
@@ -263,7 +258,7 @@ types:
       required: false
     enriched_event_type:
       title: "Enriched Event Type"
-      type: string
+      type: "string"
       description: "Enriched event type"
       required: false
     enriched:
@@ -323,7 +318,7 @@ types:
       required: false
     device_external_ip:
       title: "Device External IP"
-      type: string
+      type: "[]string"
       description: "Device external IP"
       required: false
     netconn_ipv4:
@@ -408,12 +403,12 @@ types:
       required: false
     device_name:
       title: "Device Name"
-      type: string
+      type: "[]string"
       description: "Device name"
       required: false
     backend_timestamp:
       title: "Backend Timestamp"
-      type: string
+      type: date
       description: "Backend timestamp"
       required: false
     parent_pid:
@@ -470,15 +465,9 @@ actions:
         type: string
         required: false
         example: "CONTOSO\\bruce-win10"
-      device_installed_by:
-        title: "Device Installed By"
-        description: "Device installed by"
-        type: string
-        required: false
-        example: "CONTOSO\\admin"
       device_external_ip:
         title: "Device External IP"
-        type: string
+        type: "[]string"
         description: "Device external IP"
         required: false
         example: "192.0.2.0"
@@ -492,21 +481,15 @@ actions:
       process_name:
         title: "Process Name"
         description: "Process name"
-        type: string
+        type: "[]string"
         required: false
         example: "c:\\windows\\system32\\windowspowershell\\v1.0\\modules\\smbshare\\disableunusedsmb1.ps1"
       enriched_event_type:
         title: "Enriched Event Type"
-        type: string
+        type: "string"
         description: "Enriched event type"
         required: false
         example: "SYSTEM_API_CALL"
-      event_id:
-        title: Event ID
-        type: string
-        description: Event ID
-        required: true
-        example: "422af3fc3a7411ea8da649e797467dc0"
     output:
       success:
         description: Success
@@ -522,7 +505,7 @@ actions:
     title: Get Details for Specific Event
     description: Retrieve details for an individual event given the event ID
     input:
-      event_id:
+      event_ids:
         title: Event ID
         description: Event ID
         type: string

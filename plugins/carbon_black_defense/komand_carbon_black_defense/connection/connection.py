@@ -2,7 +2,7 @@ import insightconnect_plugin_runtime
 from insightconnect_plugin_runtime.exceptions import PluginException
 
 from .schema import ConnectionSchema, Input
-from insightconnect_plugin_runtime.exceptions import ConnectionTestException
+
 
 # Custom imports below
 import requests
@@ -13,7 +13,6 @@ import json
 class Connection(insightconnect_plugin_runtime.Connection):
     def __init__(self):
         super(self.__class__, self).__init__(input=ConnectionSchema())
-
         self.job_id = None
 
     def connect(self, params={}):
@@ -24,22 +23,19 @@ class Connection(insightconnect_plugin_runtime.Connection):
         self.connector = params.get(Input.CONNECTOR)
         self.headers = {"X-Auth-Token": f"{self.token}/{self.connector}"}
 
-    def get_job_id_for_enriched_event(self, process_name: str, event_id: str) -> Optional[str]:
+    def get_job_id_for_enriched_event(self, criteria: dict) -> Optional[str]:
+        if self.org_key == "":
+            raise PluginException(cause="There's no org key input.",
+                                  assistance="Please add a valid org key to the connection.")
         response = self.call_api(
             "POST",
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs",
             json_data={
-                "criteria": {
-                    "process_name": [process_name],
-                },
-                "event_ids": event_id,
+                "criteria": criteria,
             },
-        ).get("job_id")
+        )
 
-        if response:
-            job_id = response
-            return job_id
-        return None
+        return response.get("job_id")
 
     def get_enriched_event_status(self, job_id: str = None) -> bool:
         response = self.call_api(
@@ -62,17 +58,16 @@ class Connection(insightconnect_plugin_runtime.Connection):
 
         return response
 
-    def get_job_id_for_detail_search(self, event_id: str) -> Optional[str]:
+    def get_job_id_for_detail_search(self, event_ids: str) -> Optional[str]:
+        if self.org_key == "":
+            raise PluginException(cause="There's no org key input.",
+                                  assistance="Please add a valid org key to the connection.")
         response = self.call_api(
             "POST",
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs",
-            json_data={"event_ids": [event_id]},
-        ).get("job_id")
-
-        if response:
-            job_id = response
-            return job_id
-        return None
+            json_data={"event_ids": [event_ids]},
+        )
+        return response.get("job_id")
 
     def check_status_of_detail_search(self, job_id: str = None) -> bool:
         response = self.call_api(
@@ -100,10 +95,16 @@ class Connection(insightconnect_plugin_runtime.Connection):
             if 200 <= response.status_code < 300:
                 return response.json()
             if 400 <= response.status_code < 500:
+                if response.status_code == 403:
+                    raise PluginException(
+                        cause="One of the following credentials is invalid: the org key, the api key or the connector is invalid.",
+                        assistance="Please enter valid credentials in the connection."
+                    )
                 raise PluginException(
                     preset=PluginException.Preset.UNKNOWN,
                     data=response.text,
                 )
+
             if response.status_code >= 500:
                 raise PluginException(preset=PluginException.Preset.SERVER_ERROR, data=response.text)
 

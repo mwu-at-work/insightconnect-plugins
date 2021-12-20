@@ -25,6 +25,7 @@ class FindEvent(insightconnect_plugin_runtime.Action):
         device_name = params.get(Input.DEVICE_NAME)
 
         criteria = {}
+        exclusions = {}
 
         if device_external_ip:
             criteria["device_external_ip"] = device_external_ip
@@ -41,8 +42,20 @@ class FindEvent(insightconnect_plugin_runtime.Action):
                 cause="Error. Have not entered a criteria for action to run.",
                 assistance="Enter a criteria of at least one plugin input.",
             )
+        elif len(exclusions) > 0:
+            if device_external_ip:
+                exclusions["device_external_ip"] = device_external_ip
+            if process_name:
+                exclusions["process_name"] = [process_name]
+            if enriched_event_type:
+                exclusions["enriched_event_type"] = enriched_event_type
+            if process_hash:
+                exclusions["process_hash"] = [process_hash]
+            if device_name:
+                exclusions["device_name"] = [device_name]
 
-        id_ = self.connection.get_job_id_for_enriched_event(criteria)
+
+        id_ = self.connection.get_job_id_for_enriched_event(criteria, exclusions=exclusions)
 
         self.logger.info(f"Got enriched event job ID: {id_}")
         if id_ is None:

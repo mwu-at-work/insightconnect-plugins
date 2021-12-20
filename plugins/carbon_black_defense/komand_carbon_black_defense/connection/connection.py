@@ -23,7 +23,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
         self.connector = params.get(Input.CONNECTOR)
         self.headers = {"X-Auth-Token": f"{self.token}/{self.connector}"}
 
-    def get_job_id_for_enriched_event(self, criteria: dict) -> Optional[str]:
+    def get_job_id_for_enriched_event(self, criteria: dict, exclusions: dict, time_range: dict, window: str) -> Optional[dict]:
         if self.org_key == "":
             raise PluginException(cause="There's no org key input.",
                                   assistance="Please add a valid org key to the connection.")
@@ -32,6 +32,10 @@ class Connection(insightconnect_plugin_runtime.Connection):
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs",
             json_data={
                 "criteria": criteria,
+                "exclusions": exclusions,
+                "time_range": time_range,
+                "window": window
+
             },
         )
 
@@ -49,7 +53,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
             return True
         return False
 
-    def retrieve_results_for_enriched_event(self, job_id: str = None):
+    def retrieve_results_for_enriched_event(self, job_id: str = None) -> Optional[dict]:
         response = self.call_api(
             "GET",
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs/{job_id}/results",
@@ -67,6 +71,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs",
             json_data={"event_ids": [event_ids]},
         )
+
         return response.get("job_id")
 
     def check_status_of_detail_search(self, job_id: str = None) -> bool:
@@ -89,7 +94,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
         )
         return results
 
-    def call_api(self, method: str, url: str, params: dict = None, data: str = None, json_data: object = None):
+    def call_api(self, method: str, url: str, params: dict = None, data: str = None, json_data: object = None) -> Optional[dict]:
         try:
             response = requests.request(method, url, headers=self.headers, params=params, data=data, json=json_data)
             if 200 <= response.status_code < 300:

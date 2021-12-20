@@ -38,7 +38,7 @@ class TestFindEvent(TestCase):
         expected = Util.read_file_to_dict("payloads/post_with_valid_org_key_find_event.json.resp")["job_id"]
         self.assertEqual(expected, actual)
 
-    # testing a user not inputting any criteria to search by
+    # testing a user not entering a criteria to search by
     @patch("requests.request", side_effect=Util.mock_request)
     def test_get_job_id_for_enriched_event_with_no_criteria(self, make_request):
         with self.assertRaises(PluginException) as exception:

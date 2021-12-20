@@ -172,9 +172,9 @@ types:
       description: "Event network remote port"
       required: false
     device_group_id:
-      title: "Device Group Id"
+      title: "Device Group ID"
       type: integer
-      description: "Device group id"
+      description: "Device group ID"
       required: false
     process_effective_reputation_source:
       title: "Process Effective Reputation Source"
@@ -237,9 +237,9 @@ types:
       description: "Process cmdline"
       required: false
     event_id:
-      title: "Event Id"
+      title: "Event ID"
       type: string
-      description: "Event id"
+      description: "Event ID"
       required: false
     parent_guid:
       title: "Parent GUID"
@@ -357,12 +357,12 @@ types:
       description: "Ingress time"
       required: false
     device_os:
-      title: "Device Os"
+      title: "Device OS"
       type: string
-      description: "Device os"
+      description: "Device OS"
       required: false
     device_policy_id:
-      title: "Device Policy Id"
+      title: "Device Policy ID"
       type: integer
       description: "Device policy ID"
       required: false
@@ -490,6 +490,20 @@ actions:
         description: "Enriched event type"
         required: false
         example: "SYSTEM_API_CALL"
+      time_range:
+        window:
+          title: "Time Range"
+          type: "object"
+          description: "Time frame to limit your search to. Integer used for amount of of the following: s=second(s), m=minute(s), h=hour(s), d=day(s), w=week(s), or y=year(s)."
+          required: false
+          enum:
+            -"s"
+            -"m"
+            -"h"
+            -"d"
+            -"w"
+            -"y"
+          example: "-2d"
     output:
       success:
         description: Success

@@ -69,9 +69,7 @@ class Util:
             elif "/detail_jobs" in args[1]:
                 if "org_key" not in args[1]:  # if org key is empty
                     return MockResponse(400, "payloads/post_no_org_key_get_details")
-                #  if "invalid_org_key":
-                #     return MockResponse(403, "payloads/post_invalid_org_key_get_details")
-                if "valid_org_key" in args[1] and len(kwargs["json"]["event_id"] > 0):
+                if "valid_org_key" in args[1] and len(kwargs["json"]["event_ids"] > 0):
                     return MockResponse(200, "paylods/post_with_valid_org_key_get_details")
 
     @staticmethod

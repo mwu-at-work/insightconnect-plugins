@@ -3,7 +3,6 @@ from insightconnect_plugin_runtime.exceptions import PluginException
 
 from .schema import ConnectionSchema, Input
 
-
 # Custom imports below
 import requests
 from typing import Optional
@@ -23,7 +22,8 @@ class Connection(insightconnect_plugin_runtime.Connection):
         self.connector = params.get(Input.CONNECTOR)
         self.headers = {"X-Auth-Token": f"{self.token}/{self.connector}"}
 
-    def get_job_id_for_enriched_event(self, criteria: dict, exclusions: dict, time_range: dict, window: str) -> Optional[dict]:
+    def get_job_id_for_enriched_event(self, criteria: dict, exclusions: dict = None, time_range: dict = None,
+                                      window: str = None) -> Optional[dict]:
         if self.org_key == "":
             raise PluginException(cause="There's no org key input.",
                                   assistance="Please add a valid org key to the connection.")
@@ -94,7 +94,7 @@ class Connection(insightconnect_plugin_runtime.Connection):
         )
         return results
 
-    def call_api(self, method: str, url: str, params: dict = None, data: str = None, json_data: object = None) -> Optional[dict]:
+    def call_api(self, method: str, url: str, params: dict = None, data: str = None, json_data: object = None) -> json:
         try:
             response = requests.request(method, url, headers=self.headers, params=params, data=data, json=json_data)
             if 200 <= response.status_code < 300:
@@ -102,7 +102,8 @@ class Connection(insightconnect_plugin_runtime.Connection):
             if 400 <= response.status_code < 500:
                 if response.status_code == 403:
                     raise PluginException(
-                        cause="One of the following credentials is invalid: the org key, the api key or the connector is invalid.",
+                        cause="One of the following credentials is invalid: the org key, "
+                              "the api key or the connector is invalid.",
                         assistance="Please enter valid credentials in the connection."
                     )
                 raise PluginException(

@@ -1,5 +1,8 @@
 import insightconnect_plugin_runtime
 from .schema import GetDetailsForSpecificEventInput, GetDetailsForSpecificEventOutput, Input, Output
+from insightconnect_plugin_runtime.exceptions import PluginException
+
+import time
 from _datetime import datetime
 
 
@@ -15,8 +18,18 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
     def run(self, params={}):
 
         event_id = params.get(Input.EVENT_ID)
-
-        id_ = self.connection.get_job_id_for_detail_search(event_id=event_id)
+        if len(event_id) == 0:
+            raise PluginException(
+                cause="Error. Have not entered an event ID for action to run.",
+                assistance="Please enter an event ID for the action to run.",
+            )
+        if type(event_id) is not list:
+            raise PluginException(
+                cause="Error. Event ID must be an array of a string.",
+                assistance="Please convert the data type of event ID into an array of a string."
+            )
+        id_ = self.connection.get_job_id_for_detail_search(event_ids=event_id)
+        self.logger.info(f"Got job ID for detail search: {id_}")
         if id_ is None:
             return {Output.SUCCESS: False, Output.EVENTINFO: {}}
         detail_search_status = self.connection.check_status_of_detail_search(id_)
@@ -31,7 +44,7 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
                 if (datetime.now() - t1).seconds > 60:
                     break
             else:
-                break
+                time.sleep(3)
             response = self.connection.retrieve_results_for_detail_search(job_id=id_)
             data = insightconnect_plugin_runtime.helper.clean(response)
 

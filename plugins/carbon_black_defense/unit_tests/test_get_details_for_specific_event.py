@@ -1,54 +1,49 @@
-from unittest import TestCase
-import json
-import logging
-from komand_carbon_black_defense.connection.connection import Connection
-from komand_carbon_black_defense.actions.get_details_for_specific_event import GetDetailsForSpecificEvent
-from insightconnect_plugin_runtime.exceptions import PluginException
 import sys
 import os
 
 sys.path.append(os.path.abspath("../tests/"))
 
+from unittest import TestCase
+from unittest.mock import patch
+
+from komand_carbon_black_defense.actions.get_details_for_specific_event import GetDetailsForSpecificEvent
+from komand_carbon_black_defense.actions.get_details_for_specific_event.schema import \
+    Input as GetDetailsForSpecificEventtSchemaInput
+from unit_tests.util import Util
+from insightconnect_plugin_runtime.exceptions import PluginException
+
 
 class TestGetDetailsForSpecificEvent(TestCase):
-    def test_integration_get_details_for_specific_event(self):
+    @classmethod
+    @patch("requests.request", side_effect=Util.mock_request)
+    def setUpClass(cls, mock_request) -> None:
+        cls.connection, cls.action = Util.default_connector(GetDetailsForSpecificEvent())
 
-        log = logging.getLogger("Test")
-        test_conn = Connection()
-        test_action = GetDetailsForSpecificEvent()
+    # approach: testing users input that could mess up action - user input changes / api changes
+    # test not entering an org key
+    @patch("requests.request", side_effect=Util.mock_request)
+    def test_get_job_id_for_detail_search_empty_org_key(self, make_request):
+        temp_org_key = self.action.connection.org_key
+        self.action.connection.org_key = ""
+        with self.assertRaises(PluginException) as exception:
+            self.action.connection.get_job_id_for_detail_search({GetDetailsForSpecificEventtSchemaInput.EVENT_ID: "1234"})
+        cause = "There's no org key input."
+        self.assertEqual(exception.exception.cause, cause)
+        self.action.connection.org_key = temp_org_key
 
-        test_conn.logger = log
-        test_action.logger = log
+    # testing a user not entering any event id to search by
+    @patch("requests.request", side_effect=Util.mock_request)
+    def test_get_job_id_for_detail_search_with_no_event_id(self, make_request):
+        with self.assertRaises(PluginException) as exception:
+            self.action.run({GetDetailsForSpecificEventtSchemaInput.EVENT_ID: []})
+        cause = "Error. Have not entered an event ID for action to run."
+        self.assertEqual(exception.exception.cause, cause)
 
-        try:
-            with open("../tests/get_details_for_specific_event.json", encoding="utf-8") as file:
-                test_json = json.loads(file.read()).get("body")
-                connection_params = test_json.get("connection")
-                action_params = test_json.get("input")
-        except PluginException:
-            message = """
-            Could not find or read sample tests from /tests directory
-
-            An exception here likely means you didn't fill out your samples correctly in the /tests directory
-            Please use 'icon-plugin generate samples', and fill out the resulting test files in the /tests directory
-        """
-            self.fail(message)
-
-        test_conn.connect(connection_params)
-        test_action.connection = test_conn
-        results = test_action.run(action_params)
-
-        self.assertIsNotNone(results)
-
-
-def read_file_to_string(filename):
-    with open(filename) as my_file:
-        return my_file.read()
-
-
-def load_data(filename):
-    return json.loads(
-        read_file_to_string(
-            os.path.join(os.path.dirname(os.path.realpath(__file__)), f"payloads/{filename}.json.resp")
-        )
-    )
+    # testing if a plugin exception is raised due to an incorrect event ID type
+    @patch("requests.request", side_effect=Util.mock_request)
+    def test_get_job_id_for_detail_search_with_incorrect_event_id_type(self, make_request):
+        with self.assertRaises(PluginException) as exception:
+            self.action.run(
+                {GetDetailsForSpecificEventtSchemaInput.EVENT_ID: {"1234"}})
+        cause = "Error. Event ID must be an array of a string."
+        self.assertEqual(exception.exception.cause, cause)

@@ -69,9 +69,10 @@ class Util:
             elif "/detail_jobs" in args[1]:
                 if "org_key" not in args[1]:  # if org key is empty
                     return MockResponse(400, "payloads/post_no_org_key_get_details")
-                if "valid_org_key" in args[1] and len(kwargs["json"]["event_ids"] > 0):
-                    return MockResponse(200, "paylods/post_with_valid_org_key_get_details")
-
+                if "event_id" not in args[1]:
+                    return MockResponse(400, "payloads/post_no_event_ids_get_details")
+                if type("event_id") is not list:
+                    return MockResponse(400, "payloads/post_incorrect_event_id_type_get_details")
     @staticmethod
     def default_connector(action, connect_params: object = None):
         default_connection = Connection()

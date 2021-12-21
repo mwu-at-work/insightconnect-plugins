@@ -1,0 +1,7 @@
+{
+    "message": "Missing required parameter: \"event_ids or alert_id\"",
+    "translation_key": "threathunter_search_missing_parameter_error",
+    "translation_format_values": [
+        "event_ids or alert_id"
+    ]
+}

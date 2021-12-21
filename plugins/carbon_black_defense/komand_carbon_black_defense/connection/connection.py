@@ -22,21 +22,17 @@ class Connection(insightconnect_plugin_runtime.Connection):
         self.connector = params.get(Input.CONNECTOR)
         self.headers = {"X-Auth-Token": f"{self.token}/{self.connector}"}
 
-    def get_job_id_for_enriched_event(self, criteria: dict, exclusions: dict = None, time_range: dict = None,
-                                      window: str = None) -> Optional[dict]:
+    def get_job_id_for_enriched_event(
+        self, criteria: dict, exclusions: dict = None, time_range: dict = None, window: str = None
+    ) -> Optional[dict]:
         if self.org_key == "":
-            raise PluginException(cause="There's no org key input.",
-                                  assistance="Please add a valid org key to the connection.")
+            raise PluginException(
+                cause="There's no org key input.", assistance="Please add a valid org key to the connection."
+            )
         response = self.call_api(
             "POST",
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/search_jobs",
-            json_data={
-                "criteria": criteria,
-                "exclusions": exclusions,
-                "time_range": time_range,
-                "window": window
-
-            },
+            json_data={"criteria": criteria, "exclusions": exclusions, "time_range": time_range, "window": window},
         )
 
         return response.get("job_id")
@@ -64,8 +60,9 @@ class Connection(insightconnect_plugin_runtime.Connection):
 
     def get_job_id_for_detail_search(self, event_ids: str) -> Optional[str]:
         if self.org_key == "":
-            raise PluginException(cause="There's no org key input.",
-                                  assistance="Please add a valid org key to the connection.")
+            raise PluginException(
+                cause="There's no org key input.", assistance="Please add a valid org key to the connection."
+            )
         response = self.call_api(
             "POST",
             f"{self.host}/api/investigate/v2/orgs/{self.org_key}/enriched_events/detail_jobs",
@@ -103,8 +100,8 @@ class Connection(insightconnect_plugin_runtime.Connection):
                 if response.status_code == 403:
                     raise PluginException(
                         cause="One of the following credentials is invalid: the org key, "
-                              "the api key or the connector is invalid.",
-                        assistance="Please enter valid credentials in the connection."
+                        "the api key or the connector is invalid.",
+                        assistance="Please enter valid credentials in the connection.",
                     )
                 raise PluginException(
                     preset=PluginException.Preset.UNKNOWN,

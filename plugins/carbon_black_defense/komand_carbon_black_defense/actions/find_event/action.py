@@ -1,9 +1,10 @@
 import insightconnect_plugin_runtime
 from .schema import FindEventInput, FindEventOutput, Input, Output
-
-# Custom imports below
-from _datetime import datetime
 from insightconnect_plugin_runtime.exceptions import PluginException
+
+
+from _datetime import datetime
+import time
 
 
 class FindEvent(insightconnect_plugin_runtime.Action):
@@ -54,12 +55,11 @@ class FindEvent(insightconnect_plugin_runtime.Action):
             if device_name:
                 exclusions["device_name"] = [device_name]
 
-
         id_ = self.connection.get_job_id_for_enriched_event(criteria, exclusions=exclusions)
 
         self.logger.info(f"Got enriched event job ID: {id_}")
         if id_ is None:
-            return {Output.EVENTINFO: {}}
+            return {Output.EVENTINFO: {Output.SUCCESS: False}}
         enriched_event_search_status = self.connection.get_enriched_event_status(id_)
 
         t1 = datetime.now()
@@ -69,7 +69,7 @@ class FindEvent(insightconnect_plugin_runtime.Action):
                 if (datetime.now() - t1).seconds > 60:
                     break
             else:
-                break
+                time.sleep(3)
         response = self.connection.retrieve_results_for_enriched_event(job_id=id_)
         data = insightconnect_plugin_runtime.helper.clean(response)
 

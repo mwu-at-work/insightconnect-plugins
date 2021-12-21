@@ -26,7 +26,7 @@ class GetDetailsForSpecificEvent(insightconnect_plugin_runtime.Action):
         if type(event_id) is not list:
             raise PluginException(
                 cause="Error. Event ID must be an array of a string.",
-                assistance="Please convert the data type of event ID into an array of a string."
+                assistance="Please convert the data type of event ID into an array of a string.",
             )
         id_ = self.connection.get_job_id_for_detail_search(event_ids=event_id)
         self.logger.info(f"Got job ID for detail search: {id_}")

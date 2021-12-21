@@ -73,6 +73,7 @@ class Util:
                     return MockResponse(400, "payloads/post_no_event_ids_get_details")
                 if type("event_id") is not list:
                     return MockResponse(400, "payloads/post_incorrect_event_id_type_get_details")
+
     @staticmethod
     def default_connector(action, connect_params: object = None):
         default_connection = Connection()

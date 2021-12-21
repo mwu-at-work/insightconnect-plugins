@@ -7,8 +7,9 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from komand_carbon_black_defense.actions.get_details_for_specific_event import GetDetailsForSpecificEvent
-from komand_carbon_black_defense.actions.get_details_for_specific_event.schema import \
-    Input as GetDetailsForSpecificEventtSchemaInput
+from komand_carbon_black_defense.actions.get_details_for_specific_event.schema import (
+    Input as GetDetailsForSpecificEventtSchemaInput,
+)
 from unit_tests.util import Util
 from insightconnect_plugin_runtime.exceptions import PluginException
 
@@ -26,7 +27,9 @@ class TestGetDetailsForSpecificEvent(TestCase):
         temp_org_key = self.action.connection.org_key
         self.action.connection.org_key = ""
         with self.assertRaises(PluginException) as exception:
-            self.action.connection.get_job_id_for_detail_search({GetDetailsForSpecificEventtSchemaInput.EVENT_ID: "1234"})
+            self.action.connection.get_job_id_for_detail_search(
+                {GetDetailsForSpecificEventtSchemaInput.EVENT_ID: "1234"}
+            )
         cause = "There's no org key input."
         self.assertEqual(exception.exception.cause, cause)
         self.action.connection.org_key = temp_org_key
@@ -43,7 +46,6 @@ class TestGetDetailsForSpecificEvent(TestCase):
     @patch("requests.request", side_effect=Util.mock_request)
     def test_get_job_id_for_detail_search_with_incorrect_event_id_type(self, make_request):
         with self.assertRaises(PluginException) as exception:
-            self.action.run(
-                {GetDetailsForSpecificEventtSchemaInput.EVENT_ID: {"1234"}})
+            self.action.run({GetDetailsForSpecificEventtSchemaInput.EVENT_ID: {"1234"}})
         cause = "Error. Event ID must be an array of a string."
         self.assertEqual(exception.exception.cause, cause)
